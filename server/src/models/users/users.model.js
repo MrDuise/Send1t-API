@@ -18,3 +18,25 @@ const getUserContacts = async (id) => {
     
 }
 
+
+const createUser = async (user) => {
+
+}
+
+const updateUser = async (id, user) => {
+
+}
+
+const deleteUser = async (id) => {
+
+
+}
+
+module.exports = {
+    getUserById,
+    getUserContacts,
+    createUser,
+    updateUser,
+    deleteUser
+}
+
