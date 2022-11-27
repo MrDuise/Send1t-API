@@ -1,4 +1,5 @@
-
+import mongoose from "mongoose";
+import User from "./users.mongo.js";
 
 /**
  * takes the users id and returns the user object
@@ -6,7 +7,12 @@
  * @param {*} id - the users id
  */
 const getUserById = async (id) => {
-
+    User.findById(id, (err, user) => {
+        if (err) {
+            return err;
+        }
+        return user;
+    });
 }
 
 /**
@@ -15,7 +21,12 @@ const getUserById = async (id) => {
  * @param {*} id - the users id
  */
 const getUserContacts = async (id) => {
-    
+    User.findById(id, (err, user) => {
+        if (err) {
+            return err;
+        }
+        return user.contacts;
+    });
 }
 
 
