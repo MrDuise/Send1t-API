@@ -2,14 +2,21 @@ import mongoose from "mongoose";
 
 //temp user schema. will be modified later
 const userSchema = new mongoose.Schema({
-    name: {
+    firstName: {
         type: String,
         required: true,
         unique: true,
         trim: true,
         minlength: 3
     },
-    email: {
+    lastName: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        minlength: 3
+    },
+    userName: {
         type: String,
         required: true,
         unique: true,
@@ -19,8 +26,25 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        unique: true,
+        trim: true,
+        minlength: 8,
+        maxLength: 20
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
         trim: true,
         minlength: 3
+    },
+    conversationLog: {
+        type: Array,
+        required: false,
+        unique: false,
+        trim: false,
+        minlength: 0,
+        default: []
     },
     contacts: {
         type: Array,

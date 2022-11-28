@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import User from "./users.mongo.js";
+import mongoose from 'mongoose';
+import User from './users.mongo.js';
 
 /**
  * takes the users id and returns the user object
@@ -7,13 +7,14 @@ import User from "./users.mongo.js";
  * @param {*} id - the users id
  */
 const getUserById = async (id) => {
-    User.findById(id, (err, user) => {
-        if (err) {
-            return err;
-        }
-        return user;
-    });
-}
+  try {
+    const user = await User.findById(id);
+    return user;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
 
 /**
  * Takes the user id and returns the users contacts array
@@ -21,33 +22,24 @@ const getUserById = async (id) => {
  * @param {*} id - the users id
  */
 const getUserContacts = async (id) => {
-    User.findById(id, (err, user) => {
-        if (err) {
-            return err;
-        }
-        return user.contacts;
-    });
-}
+  User.findById(id, (err, user) => {
+    if (err) {
+      return err;
+    }
+    return user.contacts;
+  });
+};
 
+const createUser = async (user) => {};
 
-const createUser = async (user) => {
+const updateUser = async (id, user) => {};
 
-}
-
-const updateUser = async (id, user) => {
-
-}
-
-const deleteUser = async (id) => {
-
-
-}
+const deleteUser = async (id) => {};
 
 module.exports = {
-    getUserById,
-    getUserContacts,
-    createUser,
-    updateUser,
-    deleteUser
-}
-
+  getUserById,
+  getUserContacts,
+  createUser,
+  updateUser,
+  deleteUser,
+};
