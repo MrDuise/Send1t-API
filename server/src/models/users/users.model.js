@@ -22,19 +22,48 @@ const getUserById = async (id) => {
  * @param {*} id - the users id
  */
 const getUserContacts = async (id) => {
-  User.findById(id, (err, user) => {
-    if (err) {
-      return err;
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      return user.contacts;
     }
-    return user.contacts;
-  });
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };
 
-const createUser = async (user) => {};
+const createUser = async (user) => {
+  try {
+    const newUser = await User.create(user);
+    return newUser;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
 
-const updateUser = async (id, user) => {};
+const updateUser = async (id, user) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, user, {
+      new: true,
+    });
+    return updatedUser;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
 
-const deleteUser = async (id) => {};
+const deleteUser = async (id) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(id);
+    return deletedUser;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
 
 module.exports = {
   getUserById,
