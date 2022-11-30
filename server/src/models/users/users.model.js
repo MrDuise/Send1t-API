@@ -12,7 +12,7 @@ const getUserById = async (id) => {
     return user;
   } catch (err) {
     console.log(err);
-    return err;
+    throw err;
   }
 };
 
