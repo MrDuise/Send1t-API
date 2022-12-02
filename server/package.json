@@ -4,7 +4,7 @@
   "description": "API for Send1t mobile application ",
   "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/index.js",
     "test": "test"
   },
   "author": "Michael Duisenberg",

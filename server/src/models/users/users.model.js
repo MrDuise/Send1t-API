@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import User from './users.mongo.js';
+//import mongoose from 'mongoose';
+const User = require('./users.mongo.js');
 
 /**
  * takes the users id and returns the user object
@@ -29,17 +29,17 @@ const getUserContacts = async (id) => {
     }
   } catch (error) {
     console.log(error);
-    return error;
+    throw error;
   }
 };
 
 const createUser = async (user) => {
   try {
-    const newUser = await User.create(user);
-    return newUser;
+    const response = await User.create(user);
+    return response;
   } catch (err) {
     console.log(err);
-    return err;
+    throw err;
   }
 };
 
@@ -51,7 +51,7 @@ const updateUser = async (id, user) => {
     return updatedUser;
   } catch (err) {
     console.log(err);
-    return err;
+    throw err;
   }
 };
 
@@ -61,7 +61,7 @@ const deleteUser = async (id) => {
     return deletedUser;
   } catch (err) {
     console.log(err);
-    return err;
+    throw err;
   }
 };
 

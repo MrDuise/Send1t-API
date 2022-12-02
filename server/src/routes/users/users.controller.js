@@ -1,13 +1,12 @@
-import {
+const {
   getUserById,
   getUserContacts,
   createUser,
   updateUser,
   deleteUser,
-} from '../models/users/users.model.js';
+} = require('../../models/users/users.model');
 
 const { passport } = require('passport');
-
 
 const localLogin = async (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -38,7 +37,6 @@ const logout = async (req, res, next) => {
   res.status(200).send('logged out');
 };
 
-
 /**
  * Takes the user id and returns the users contacts array
  *
@@ -53,7 +51,7 @@ const getUserContactsController = async (req, res, next) => {
     const contacts = await getUserContacts(id);
     if (contacts !== null) {
       return res.status(200).json(contacts);
-    } else if(contacts.length === 0) {
+    } else if (contacts.length === 0) {
       return res.status(404).json({ message: 'No contacts found' });
     }
   } catch (error) {
@@ -77,7 +75,6 @@ const getUserByIdController = async (req, res, next) => {
     if (user !== null) {
       return res.status(200).json(user);
     }
-    else 
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
@@ -92,7 +89,16 @@ const getUserByIdController = async (req, res, next) => {
  */
 const createUserController = async (req, res, next) => {
   try {
-    const user = await createUser(req.body);
+    const newUser = {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      userName: req.body.userName,
+      password: req.body.password,
+      email: req.body.email,
+      conversationLog: [],
+      contacts: [],
+    };
+    const user = await createUser(newUser);
     if (user !== null) {
       return res.status(201).json(user);
     }
@@ -140,7 +146,7 @@ const deleteUserController = async (req, res, next) => {
   }
 };
 
-export {
+module.exports = {
   localLogin,
   loginGoogle,
   loginFacebook,

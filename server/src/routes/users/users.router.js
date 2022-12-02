@@ -8,11 +8,9 @@ const { getUserContactsController,
     updateUserController,
     deleteUserController } = require('./users.controller');
 
-usersRouter.get('/', getUsers);
-usersRouter.get('/:id', getUser);
-usersRouter.post('/', createUser);
-usersRouter.put('/:id', updateUser);
-usersRouter.delete('/:id', deleteUser);
+
+usersRouter.post('/createUser', createUserController);
+
 
 
 
