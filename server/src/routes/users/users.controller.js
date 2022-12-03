@@ -8,6 +8,8 @@ const {
 
 const { passport } = require('passport');
 
+const bcrypt = require('bcryptjs');
+
 const localLogin = async (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -88,7 +90,9 @@ const getUserByIdController = async (req, res, next) => {
  * @returns
  */
 const createUserController = async (req, res, next) => {
+
   try {
+    //make a user object from the request body
     const newUser = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -98,13 +102,18 @@ const createUserController = async (req, res, next) => {
       conversationLog: [],
       contacts: [],
     };
+
+  
+
+    //create the user
     const user = await createUser(newUser);
     if (user !== null) {
+      console.log(user);
       return res.status(201).json(user);
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    return res.status(500).json({"message": "Username/Email not available", "error": error});
   }
 };
 
