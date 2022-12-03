@@ -90,7 +90,6 @@ const getUserByIdController = async (req, res, next) => {
  * @returns
  */
 const createUserController = async (req, res, next) => {
-
   try {
     //make a user object from the request body
     const newUser = {
@@ -103,8 +102,6 @@ const createUserController = async (req, res, next) => {
       contacts: [],
     };
 
-  
-
     //create the user
     const user = await createUser(newUser);
     if (user !== null) {
@@ -113,7 +110,9 @@ const createUserController = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({"message": "Username/Email not available", "error": error});
+    return res
+      .status(500)
+      .json({ message: 'Username/Email not available', error: error });
   }
 };
 

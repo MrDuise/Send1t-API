@@ -54,7 +54,9 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-
+//auto hash password before saving
+//this is done before the user is saved to the database
+//and when the user is updated
 userSchema.pre("save", function (next) {
     const user = this
   

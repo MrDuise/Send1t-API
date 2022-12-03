@@ -33,6 +33,21 @@ const getUserContacts = async (id) => {
   }
 };
 
+const createContact = async (id, contact) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      user.contacts.push(contact);
+      await user.save();
+      return user.contacts;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
 const createUser = async (user) => {
   try {
     const response = await User.create(user);
@@ -71,4 +86,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
+  createContact,
 };

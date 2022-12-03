@@ -9,7 +9,11 @@ const { getUserContactsController,
     deleteUserController } = require('./users.controller');
 
 
+usersRouter.get('/contacts/:id', getUserContactsController);
 usersRouter.post('/createUser', createUserController);
+usersRouter.get('/getUserById/:id', getUserByIdController);
+usersRouter.put('/updateUser/:id', updateUserController);
+usersRouter.delete('/deleteUser/:id', deleteUserController);
 
 
 
