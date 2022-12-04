@@ -51,14 +51,14 @@ const getUserContactsController = async (req, res, next) => {
   try {
     const { id } = req.params;
     const contacts = await getUserContacts(id);
-    if (contacts !== null) {
+    if (contacts !== null && contacts.length > 0) {
       return res.status(200).json(contacts);
     } else if (contacts.length === 0) {
       return res.status(404).json({ message: 'No contacts found' });
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    return res.status(500).json({ message: 'User not found', error });
   }
 };
 
@@ -79,7 +79,7 @@ const getUserByIdController = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    return res.status(500).json({ message: 'User not found' });
   }
 };
 

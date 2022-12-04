@@ -86,5 +86,5 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  createContact,
+  createContact, 
 };
