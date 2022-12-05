@@ -89,7 +89,7 @@ const getUserByIdController = async (req, res, next) => {
  * @param {*} next - the next middleware function
  * @returns
  */
-const createUserController = async (req, res, next) => {
+const register = async (req, res, next) => {
   try {
     //make a user object from the request body
     const newUser = {
@@ -161,7 +161,7 @@ module.exports = {
   logout,
   getUserContactsController,
   getUserByIdController,
-  createUserController,
+  register,
   updateUserController,
   deleteUserController,
 };

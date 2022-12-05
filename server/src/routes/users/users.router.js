@@ -4,7 +4,7 @@ const usersRouter = express.Router();
 
 const { getUserContactsController,
     getUserByIdController,
-    createUserController,
+    register,
     updateUserController,
     deleteUserController } = require('./users.controller');
 
@@ -12,7 +12,7 @@ const { getUserContactsController,
 //usersRouter.post("/login/google", loginGoogle);
 //usersRouter.post("/login/facebook", loginFacebook);
 usersRouter.get('/contacts/:id', getUserContactsController);
-usersRouter.post('/createUser', createUserController);
+usersRouter.post('/register', register);
 usersRouter.get('/getUserById/:id', getUserByIdController);
 usersRouter.put('/updateUser/:id', updateUserController);
 usersRouter.delete('/deleteUser/:id', deleteUserController);
