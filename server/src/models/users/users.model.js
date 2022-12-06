@@ -20,7 +20,7 @@ const getUserById = async (id) => {
  * Takes the user object passed in from the controller and adds it to the database
  * used by the register controller
  * @param {*} user
- * @return {*} 
+ * @return {*}
  */
 const createUser = async (user) => {
   try {
@@ -37,14 +37,14 @@ const createUser = async (user) => {
  *
  * @param {*} id
  * @param {*} user
- * @return {*} 
+ * @return {*}
  */
 const updateUser = async (id, user) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(id, user, {
       new: true,
     });
-    if(updatedUser === null) throw new Error('User not found');
+    if (updatedUser === null) throw new Error('User not found');
 
     return updatedUser;
   } catch (err) {
@@ -57,12 +57,12 @@ const updateUser = async (id, user) => {
  * Takes the user id and deletes the user from the database
  *
  * @param {*} id
- * @return {*} 
+ * @return {*}
  */
 const deleteUser = async (id) => {
   try {
     const deletedUser = await User.findByIdAndDelete(id);
-    if(deletedUser === null) throw new Error('User not found');
+    if (deletedUser === null) throw new Error('User not found');
     return deletedUser;
   } catch (err) {
     console.log(err);
@@ -80,8 +80,7 @@ const getUserContacts = async (id) => {
     const user = await getUserById(id);
     if (user) {
       return user.contacts;
-    }
-    else {
+    } else {
       throw new Error('User not found');
     }
   } catch (error) {
@@ -97,8 +96,7 @@ const createContact = async (id, contact) => {
       user.contacts.push(contact);
       await user.save();
       return user.contacts;
-    }
-    else {
+    } else {
       throw new Error('User not found');
     }
   } catch (error) {
@@ -117,8 +115,7 @@ const deleteContact = async (id, contactId) => {
       user.contacts = contacts;
       await user.save();
       return user.contacts;
-    }
-    else {
+    } else {
       throw new Error('User not found');
     }
   } catch (error) {
@@ -127,19 +124,12 @@ const deleteContact = async (id, contactId) => {
   }
 };
 
-
-
-
-
-
-
-
 module.exports = {
   getUserById,
   getUserContacts,
   createUser,
   updateUser,
   deleteUser,
-  createContact, 
-  deleteContact
+  createContact,
+  deleteContact,
 };

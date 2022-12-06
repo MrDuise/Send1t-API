@@ -131,7 +131,7 @@ const updateUserController = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    return res.status(404).json({ message: 'User not found', error });
   }
 };
 
