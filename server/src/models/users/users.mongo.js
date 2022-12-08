@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         trim: true,
-        minlength: 3
+        minlength: 8,
+        maxLength: 15
     },
     firstName: {
         type: String,
@@ -46,6 +47,16 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     contacts: {
+        type: Array,
+        required: true,
+        default: []
+    },
+    friendRequests: {
+        type: Array,
+        required: true,
+        default: []
+    },
+    blockedUsers: {
         type: Array,
         required: true,
         default: []
