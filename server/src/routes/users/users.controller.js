@@ -101,6 +101,10 @@ const register = async (req, res, next) => {
       contacts: [],
     };
 
+    //if any of the fields are empty return an error
+    if(!newUser. firstName || !newUser.lastName || !newUser.userName || !newUser.password || !newUser.email) return res.status(400).json({message: 'Please fill out all fields'});;
+
+
     //create the user
     const user = await createUser(newUser);
     if (user !== null) {

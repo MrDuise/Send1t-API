@@ -51,11 +51,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         default: []
     },
-    friendRequests: {
-        type: Array,
-        required: true,
-        default: []
-    },
     blockedUsers: {
         type: Array,
         required: true,
