@@ -5,6 +5,7 @@ const {
   updateUser,
   deleteUser,
   createContact,
+  acceptFriendRequest,
 } = require('../../models/users/users.model');
 
 const { passport } = require('passport');
@@ -102,8 +103,14 @@ const register = async (req, res, next) => {
     };
 
     //if any of the fields are empty return an error
-    if(!newUser. firstName || !newUser.lastName || !newUser.userName || !newUser.password || !newUser.email) return res.status(400).json({message: 'Please fill out all fields'});;
-
+    if (
+      !newUser.firstName ||
+      !newUser.lastName ||
+      !newUser.userName ||
+      !newUser.password ||
+      !newUser.email
+    )
+      return res.status(400).json({ message: 'Please fill out all fields' });
 
     //create the user
     const user = await createUser(newUser);
@@ -149,14 +156,23 @@ const deleteUserController = async (req, res, next) => {
     const { id } = req.params;
     const user = await deleteUser(id);
     if (user !== null) {
-      return res.status(200).json(user);
+      return res.status(200).json({ message: 'User Deleted', user });
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error);
+    return res.status(404).json({ message: 'User not found', error });
   }
 };
-
+/**
+ * Takes the user id of the current user and the user id of the friend to be added
+ * then addes the friend to the current users contacts array in a pending status
+ * and adds the current user to the friends contacts array in a pending status
+ *
+ * @param {*} req the body of the request should contain the current user id and the friend id
+ * @param {*} res should return a message indicating success or failure of sending the request
+ * @param {*} next
+ * @return {*}
+ */
 const sendFriendRequest = async (req, res, next) => {
   try {
     //get the current user and the friend ids from the request body
@@ -195,7 +211,7 @@ const sendFriendRequest = async (req, res, next) => {
         const updatedUser = await createContact(currentID, newContact);
         //update the friend in the database
         //the friend is updated with the new contact object
-        const updatedFriend = await updateUser(friendID, friendNewContact);
+        const updatedFriend = await createContact(friendID, friendNewContact);
 
         if (updatedUser !== null && updatedFriend !== null) {
           return res.status(200).json({ message: 'Friend request sent' });
@@ -212,17 +228,17 @@ const sendFriendRequest = async (req, res, next) => {
 //get the current signed in user that has a friend request
 
 //TODO: fix the acception of friend request
-const acceptFriendRequest = async (req, res, next) => {
+const acceptFriendRequestController = async (req, res, next) => {
   try {
     //get the current user and the friend ids from the request body
-    const currentuser = await getUserById(req.body.currentID);
+    const { currentID, friendID } = req.body;
 
-    if (currentuser !== null) {
-      const friend = currentuser.friendRequests.find(
-        (request) => request._id == req.body.friendID
-      );
-      if (friend !== null) {
-      }
+    //in the signed in user's contacts array find the friend request then accept it and return the updated array
+    const currentUserContacts = acceptFriendRequest(currentID, friendID);
+    //in the friend's contacts array find the friend request then accept it and return the updated array
+    const friendContacts = acceptFriendRequest(friendID, currentID);
+    if (currentUserContacts !== null && friendContacts !== null) {
+      return res.status(200).json({ message: 'Friend request accepted' });
     }
   } catch (error) {
     console.log(error);
@@ -237,10 +253,9 @@ const declineFriendRequest = async (req, res, next) => {
     const currentuser = await getUserById(req.body.currentID);
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error)
+    return res.status(500).send(error);
   }
 };
-
 
 module.exports = {
   localLogin,
@@ -252,4 +267,6 @@ module.exports = {
   register,
   updateUserController,
   deleteUserController,
+  sendFriendRequest,
+  acceptFriendRequestController,
 };

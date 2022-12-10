@@ -6,7 +6,7 @@ const { getUserContactsController,
     getUserByIdController,
     register,
     updateUserController,
-    deleteUserController } = require('./users.controller');
+    deleteUserController, sendFriendRequest, acceptFriendRequestController } = require('./users.controller');
 
 //usersRouter.post("/login/local", localLogin);
 //usersRouter.post("/login/google", loginGoogle);
@@ -16,6 +16,8 @@ usersRouter.post('/register', register);
 usersRouter.get('/getUserById/:id', getUserByIdController);
 usersRouter.put('/updateUser/:id', updateUserController);
 usersRouter.delete('/deleteUser/:id', deleteUserController);
+usersRouter.post('/sendFriendRequest', sendFriendRequest);
+usersRouter.post('/acceptFriendRequest', acceptFriendRequestController);
 
 
 

@@ -105,6 +105,47 @@ const createContact = async (id, contact) => {
   }
 };
 
+const acceptFriendRequest = async (id, contactId) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      const contact = user.contacts.find((contact) => {
+        return contact.id.toString() === contactId;
+      });
+
+      contact.status = 'accepted';
+
+      const updatedUser = await User.findByIdAndUpdate(id, user, {
+        new: true,
+      });
+      if (updatedUser === null) throw new Error('User not found');
+      return updatedUser;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const getContactById = async (id, contactId) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      const contact = user.contacts.find((contact) => {
+        return contact._id.toString() === contactId;
+      });
+      return contact;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 const deleteContact = async (id, contactId) => {
   try {
     const user = await getUserById(id);
@@ -131,5 +172,7 @@ module.exports = {
   updateUser,
   deleteUser,
   createContact,
+  getContactById,
+  acceptFriendRequest,
   deleteContact,
 };
