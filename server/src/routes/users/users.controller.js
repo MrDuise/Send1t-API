@@ -29,7 +29,29 @@ const localLogin = async (req, res, next) => {
   })(req, res, next);
 };
 
-const loginGoogle = async (req, res, next) => {};
+const loginGoogle = async (req, res, next) => {
+  passport.authenticate('google', (err, user, info) => {
+    if (err) {
+      console.log(err);
+      res.status(
+        203
+      ).send(
+        'There was an error logging in with Google. Please try again later.'
+      );
+    } else {
+      if (user) {
+        req.login(user, (err) => {
+          req.session.user = user;
+          res.status(200).send(user._id);
+        });
+      } else {
+        console.log(info);
+        res.status(202).send(info);
+      }
+    }
+  })(req, res, next);
+  
+};
 
 const loginFacebook = async (req, res, next) => {};
 

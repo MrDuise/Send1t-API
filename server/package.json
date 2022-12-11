@@ -24,6 +24,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
+    "passport-oauth2": "^1.6.1",
     "socket.io": "^4.5.3",
     "supertest": "^6.3.3"
   }
