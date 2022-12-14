@@ -129,6 +129,30 @@ const acceptFriendRequest = async (id, contactId) => {
   }
 };
 
+const declineFriendRequest = async (id, contactId) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      const contacts = user.contacts.filter((contact) => {
+        return contact.id.toString() !== contactId;
+      });
+      user.contacts = contacts;
+
+      const updatedUser = await User.findByIdAndUpdate(id, user, {
+        new: true,
+      });
+      if (updatedUser === null) throw new Error('User not found');
+      return updatedUser;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+
 const getContactById = async (id, contactId) => {
   try {
     const user = await getUserById(id);
@@ -174,5 +198,6 @@ module.exports = {
   createContact,
   getContactById,
   acceptFriendRequest,
+  declineFriendRequest,
   deleteContact,
 };
