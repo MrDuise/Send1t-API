@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL_TEST = process.env.MONGO_URL_TEST;
+const MONGO_URL_PROD = process.env.MONGO_URL_PROD;
 
   
 mongoose.connection.once('open', () => {
@@ -13,15 +14,21 @@ mongoose.connection.on('error', (err) => {
   console.error(err);
 });
 
-async function mongoConnect() {
-  await mongoose.connect(MONGO_URL);
+async function mongoConnectTEST() {
+ await mongoose.connect(MONGO_URL_TEST);
+}
+
+async function mongoConnectPROD() {
+  await mongoose.connect(MONGO_URL_PROD);
 }
 
 async function mongoDisconnect() {
   await mongoose.disconnect();
 }
 
+
 module.exports = {
-  mongoConnect,
+  mongoConnectTEST,
+  mongoConnectPROD,
   mongoDisconnect,
 };
