@@ -34,11 +34,11 @@ const loginGoogle = async (req, res, next) => {
   passport.authenticate('google', (err, user, info) => {
     if (err) {
       console.log(err);
-      res.status(
-        203
-      ).send(
-        'There was an error logging in with Google. Please try again later.'
-      );
+      res
+        .status(203)
+        .send(
+          'There was an error logging in with Google. Please try again later.'
+        );
     } else {
       if (user) {
         req.login(user, (err) => {
@@ -51,7 +51,6 @@ const loginGoogle = async (req, res, next) => {
       }
     }
   })(req, res, next);
-  
 };
 
 const loginFacebook = async (req, res, next) => {};
