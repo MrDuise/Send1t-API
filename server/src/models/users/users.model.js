@@ -74,6 +74,8 @@ const deleteUser = async (id) => {
  * Takes the user id and returns the users contacts array
  *
  * @param {*} id - the users id
+ * returns the users contacts array if found
+ * returns an error if the user is not found
  */
 const getUserContacts = async (id) => {
   try {
@@ -88,7 +90,13 @@ const getUserContacts = async (id) => {
     throw error;
   }
 };
-
+/**
+ *
+ *
+ * @param {*} id - the users id
+ * @param {*} contact - the contact object to be added to the users contacts array
+ * @return {*} - the updated contacts array
+ */
 const createContact = async (id, contact) => {
   try {
     const user = await getUserById(id);
@@ -105,6 +113,14 @@ const createContact = async (id, contact) => {
   }
 };
 
+
+/**
+ *
+ *
+ * @param {*} id - the users id
+ * @param {*} contactId - the id of the contact to be added
+ * @return {*} 
+ */
 const acceptFriendRequest = async (id, contactId) => {
   try {
     const user = await getUserById(id);
@@ -129,6 +145,13 @@ const acceptFriendRequest = async (id, contactId) => {
   }
 };
 
+/**
+ *
+ *
+ * @param {*} id - the users id
+ * @param {*} contactId - the id of the contact to be found
+ * @return {*} - the contact object if found
+ */
 const getContactById = async (id, contactId) => {
   try {
     const user = await getUserById(id);
@@ -145,7 +168,13 @@ const getContactById = async (id, contactId) => {
     throw error;
   }
 };
-
+/**
+ * Takes the users id and the contact id and deletes the contact from the users contacts array
+ *
+ * @param {*} id - the users id
+ * @param {*} contactId - the id of the contact to be deleted
+ * @return {*} - the updated contacts array
+ */
 const deleteContact = async (id, contactId) => {
   try {
     const user = await getUserById(id);

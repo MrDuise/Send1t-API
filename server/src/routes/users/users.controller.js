@@ -246,10 +246,16 @@ const sendFriendRequest = async (req, res, next) => {
   }
 };
 
-//order of friend request
-//get the current signed in user that has a friend request
 
-//TODO: fix the acception of friend request
+
+/**
+ * Takes the user id of the current user and the user id of the friend to be added
+ *
+ * @param {*} req - the body of the request should contain the current user id and the friend id
+ * @param {*} res - should return a message indicating success of accepting the request
+ * @param {*} next
+ * @return {*}  - returns a message indicating success or failure of accepting the request
+ */
 const acceptFriendRequestController = async (req, res, next) => {
   try {
     //get the current user and the friend ids from the request body
