@@ -72,6 +72,26 @@ passport.use(
   )
 );
 
+// Serialize the user for the session
+passport.serializeUser((user, cb) => {
+  cb(null, user);
+});
+
+// Deserialize the user from the session
+passport.deserializeUser((obj, cb) => {
+  cb(null, obj);
+});
+
+
+app.use(session({
+  secret: 'your-secret-key',
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/v1', api);
 
 module.exports = app;

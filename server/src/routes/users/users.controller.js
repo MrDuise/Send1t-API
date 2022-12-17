@@ -6,6 +6,7 @@ const {
   deleteUser,
   createContact,
   acceptFriendRequest,
+  declineFriendRequest,
 } = require('../../models/users/users.model');
 
 const { passport } = require('passport');
@@ -33,11 +34,11 @@ const loginGoogle = async (req, res, next) => {
   passport.authenticate('google', (err, user, info) => {
     if (err) {
       console.log(err);
-      res.status(
-        203
-      ).send(
-        'There was an error logging in with Google. Please try again later.'
-      );
+      res
+        .status(203)
+        .send(
+          'There was an error logging in with Google. Please try again later.'
+        );
     } else {
       if (user) {
         req.login(user, (err) => {
@@ -50,7 +51,6 @@ const loginGoogle = async (req, res, next) => {
       }
     }
   })(req, res, next);
-  
 };
 
 const loginFacebook = async (req, res, next) => {};
@@ -275,10 +275,18 @@ const acceptFriendRequestController = async (req, res, next) => {
 };
 
 //TODO: fix the decline of friend request
-const declineFriendRequest = async (req, res, next) => {
+const declineFriendRequestController = async (req, res, next) => {
   try {
     //get the current user and the friend ids from the request body
-    const currentuser = await getUserById(req.body.currentID);
+    const { currentID, friendID } = req.body;
+
+    //in the signed in user's contacts array find the friend request then accept it and return the updated array
+    const currentUserContacts = declineFriendRequest(currentID, friendID);
+    //in the friend's contacts array find the friend request then accept it and return the updated array
+    const friendContacts = declineFriendRequest(friendID, currentID);
+    if (currentUserContacts !== null && friendContacts !== null) {
+      return res.status(200).json({ message: 'Friend request declined' });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).send(error);
