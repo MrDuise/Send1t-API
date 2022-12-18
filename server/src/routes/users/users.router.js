@@ -3,6 +3,7 @@ const { use } = require('passport');
 const usersRouter = express.Router();
 const { passport } = require('passport');
 const {
+  localLogin,
   getUserContactsController,
   getUserByIdController,
   register,
@@ -12,7 +13,7 @@ const {
   acceptFriendRequestController,
 } = require('./users.controller');
 
-//usersRouter.post("/login/local", localLogin);
+usersRouter.post("/login/local", localLogin);
 //usersRouter.post("/login/google", loginGoogle);
 //usersRouter.post("/login/facebook", loginFacebook);
 usersRouter.get('/contacts/:id', getUserContactsController);
@@ -22,13 +23,6 @@ usersRouter.put('/updateUser/:id', updateUserController);
 usersRouter.delete('/deleteUser/:id', deleteUserController);
 usersRouter.post('/sendFriendRequest', sendFriendRequest);
 usersRouter.post('/acceptFriendRequest', acceptFriendRequestController);
-usersRouter.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-);
+
 
 module.exports = usersRouter;

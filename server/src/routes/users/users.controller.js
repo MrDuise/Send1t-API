@@ -9,21 +9,23 @@ const {
   declineFriendRequest,
 } = require('../../models/users/users.model');
 
-const { passport } = require('passport');
+const passport  = require('passport');
 
 const localLogin = async (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      console.log(err);
+      console.log("error", err);
       res.status(203).send(err);
     } else {
       if (user) {
         req.login(user, (err) => {
           req.session.user = user;
-          res.status(200).send(user._id);
+          res.status(200).send(user);
         });
       } else {
-        console.log(info);
+        console.log("info", info);
+        console.log("user", user);
+        console.log("req.body", req.body);
         res.status(202).send(info);
       }
     }
