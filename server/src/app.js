@@ -98,9 +98,9 @@ passport.use(
     {
       authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
       tokenURL: 'https://www.googleapis.com/oauth2/v4/token',
-      clientID: 'your-client-id',
-      clientSecret: 'your-client-secret',
-      callbackURL: 'http://your-callback-url/callback',
+      clientID: '615925627145-9ut3k9hgs6m96jv4r9ifqk6s7lum5p2u.apps.googleusercontent.com',
+      clientSecret: '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',
+      callbackURL: 'http://localhost:8000/v1/users/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       // Find or create the user based on the profile information
