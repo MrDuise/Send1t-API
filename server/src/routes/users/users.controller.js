@@ -1,6 +1,7 @@
 const {
   getUserById,
   getUserContacts,
+  getUserByUsername,
   createUser,
   updateUser,
   deleteUser,
@@ -9,12 +10,12 @@ const {
   declineFriendRequest,
 } = require('../../models/users/users.model');
 
-const passport  = require('passport');
+const passport = require('passport');
 
 const localLogin = async (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      console.log("error", err);
+      console.log('error', err);
       res.status(203).send(err);
     } else {
       if (user) {
@@ -23,9 +24,9 @@ const localLogin = async (req, res, next) => {
           res.status(200).send(user);
         });
       } else {
-        console.log("info", info);
-        console.log("user", user);
-        console.log("req.body", req.body);
+        console.log('info', info);
+        console.log('user', user);
+        console.log('req.body', req.body);
         res.status(202).send(info);
       }
     }
@@ -35,22 +36,24 @@ const localLogin = async (req, res, next) => {
 const loginGoogle = async (req, res, next) => {
   passport.authenticate('google', { scope: ['profile', 'email'] });
   res.status(200).send('logged in');
-}
+};
 
 const googleCallback = async (req, res, next) => {
-  passport.authenticate( 'google', {
+  passport.authenticate('google', {
     successRedirect: '/dashboard',
-    failureRedirect: '/login'
- })
-}
-
-
-const loginFacebook = async (req, res, next) => {};
+    failureRedirect: '/login',
+  });
+};
 
 const logout = async (req, res, next) => {
-  req.logout();
-  req.session.destroy();
-  res.status(200).send('logged out');
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy();
+    res.status(200).send('logged out');
+    //res.redirect('/');
+  });
 };
 
 /**
@@ -63,8 +66,11 @@ const logout = async (req, res, next) => {
  */
 const getUserContactsController = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const contacts = await getUserContacts(id);
+    if (req.isAuthenticated() === false)
+      return res.status(401).json({ message: 'Not authorized' });
+
+    const user = req.session.user;
+    const contacts = user.contacts;
     if (contacts !== null && contacts.length > 0) {
       return res.status(200).json(contacts);
     } else if (contacts.length === 0) {
@@ -148,6 +154,8 @@ const register = async (req, res, next) => {
  */
 const updateUserController = async (req, res, next) => {
   try {
+    if (req.isAuthenticated() === false)
+    return res.status(401).json({ message: 'Not authorized' });
     const { id } = req.params;
     const user = await updateUser(id, req.body);
     if (user !== null) {
@@ -167,6 +175,8 @@ const updateUserController = async (req, res, next) => {
  */
 const deleteUserController = async (req, res, next) => {
   try {
+    if (req.isAuthenticated() === false)
+    return res.status(401).json({ message: 'Not authorized' });
     const { id } = req.params;
     const user = await deleteUser(id);
     if (user !== null) {
@@ -189,13 +199,18 @@ const deleteUserController = async (req, res, next) => {
  */
 const sendFriendRequest = async (req, res, next) => {
   try {
-    //get the current user and the friend ids from the request body
-    const { currentID, friendID } = req.body;
-    //get the current user from the database
-    const currentUser = await getUserById(currentID);
+
+    //if the user is not authenticated return an error
+    if (req.isAuthenticated() === false)
+      return res.status(401).json({ message: 'Not authorized' });
+
+    //get the friendsUserName from the request body
+    const { friendUserName } = req.body;
+    //get the current user from the session
+    const currentUser = req.session.user;
 
     if (currentUser !== null) {
-      const friend = await getUserById(friendID);
+      const friend = await getUserByUsername(friendUserName);
       if (friend !== null) {
         //create a new contact object for the current user
 
@@ -222,10 +237,16 @@ const sendFriendRequest = async (req, res, next) => {
 
         //update the current user in the database
         //the current user is updated with the new contact object
-        const updatedUser = await createContact(currentID, newContact);
+        const updatedUser = await createContact(
+          currentUser.userName,
+          newContact
+        );
         //update the friend in the database
         //the friend is updated with the new contact object
-        const updatedFriend = await createContact(friendID, friendNewContact);
+        const updatedFriend = await createContact(
+          friend.userName,
+          friendNewContact
+        );
 
         if (updatedUser !== null && updatedFriend !== null) {
           return res.status(200).json({ message: 'Friend request sent' });
@@ -238,8 +259,6 @@ const sendFriendRequest = async (req, res, next) => {
   }
 };
 
-
-
 /**
  * Takes the user id of the current user and the user id of the friend to be added
  *
@@ -250,6 +269,8 @@ const sendFriendRequest = async (req, res, next) => {
  */
 const acceptFriendRequestController = async (req, res, next) => {
   try {
+    if (req.isAuthenticated() === false)
+    return res.status(401).json({ message: 'Not authorized' });
     //get the current user and the friend ids from the request body
     const { currentID, friendID } = req.body;
 
@@ -288,7 +309,7 @@ const declineFriendRequestController = async (req, res, next) => {
 module.exports = {
   localLogin,
   loginGoogle,
-  loginFacebook,
+
   logout,
   getUserContactsController,
   getUserByIdController,

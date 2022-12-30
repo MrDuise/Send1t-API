@@ -17,6 +17,23 @@ const getUserById = async (id) => {
 };
 
 /**
+ * Takes a username string and finds the user in the database that matches that username
+ *
+ * @param {*} username
+ * @return {*} 
+ */
+const getUserByUsername = async (username) => {
+  try {
+    const user = await User.findOne({ username });
+    return user;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+
+/**
  * Takes the user object passed in from the controller and adds it to the database
  * used by the register controller
  * @param {*} user
@@ -97,9 +114,9 @@ const getUserContacts = async (id) => {
  * @param {*} contact - the contact object to be added to the users contacts array
  * @return {*} - the updated contacts array
  */
-const createContact = async (id, contact) => {
+const createContact = async (userName, contact) => {
   try {
-    const user = await getUserById(id);
+    const user = await getUserByUsername(userName);
     if (user !== null) {
       user.contacts.push(contact);
       await user.save();
@@ -213,6 +230,7 @@ const deleteContact = async (id, contactId) => {
 
 module.exports = {
   getUserById,
+  getUserByUsername,
   getUserContacts,
   createUser,
   updateUser,
