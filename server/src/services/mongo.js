@@ -15,11 +15,11 @@ mongoose.connection.on('error', (err) => {
 });
 
 async function mongoConnectTEST() {
- await mongoose.connect(MONGO_URL_TEST);
+ return await mongoose.connect(MONGO_URL_TEST);
 }
 
 async function mongoConnectPROD() {
-  await mongoose.connect(MONGO_URL_PROD);
+ return await mongoose.connect(MONGO_URL_PROD);
 }
 
 async function mongoDisconnect() {
