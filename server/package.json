@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "watch": "nodemon src/index.js",
-    "test-users": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "test": "jest"
   },
   "author": "Michael Duisenberg",
   "license": "ISC",

@@ -110,6 +110,7 @@ const getUserByIdController = async (req, res, next) => {
  * @returns
  */
 const register = async (req, res, next) => {
+  console.log("REQ ", req.body);
   try {
     //make a user object from the request body
     const newUser = {
