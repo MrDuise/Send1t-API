@@ -55,7 +55,24 @@ const userSchema = new mongoose.Schema({
         type: Array,
         required: true,
         default: []
-    }
+    },
+    profilePicture: {
+        type: String,
+        required: false,
+        unique: false,
+        trim: false,
+        minlength: 0,
+        default: ""
+    },
+    status: {
+        type: Boolean,
+        required: false,
+        unique: false,
+        trim: false,
+        minlength: 0,
+        default: false
+    },
+
 }, {
     timestamps: true
 });

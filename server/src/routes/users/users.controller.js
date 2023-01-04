@@ -110,39 +110,37 @@ const getUserByIdController = async (req, res, next) => {
  * @returns
  */
 const register = async (req, res, next) => {
+  //destructure the request body
+  const { firstName, lastName, userName, password, email } = req.body;
+
+  //If any of the fields are empty return an error
+  if (!firstName || !lastName || !userName || !password || !email)
+    return res.status(400).json({ message: 'Please fill out all fields' });
   try {
     //make a user object from the request body
     const newUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      userName: req.body.userName,
-      password: req.body.password,
-      email: req.body.email,
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      password: password,
+      email: email,
       conversationLog: [],
       contacts: [],
     };
 
-    //if any of the fields are empty return an error
-    if (
-      !newUser.firstName ||
-      !newUser.lastName ||
-      !newUser.userName ||
-      !newUser.password ||
-      !newUser.email
-    )
-      return res.status(400).json({ message: 'Please fill out all fields' });
+    
 
-    //create the user
+    //create the user in the database
     const user = await createUser(newUser);
+
+    //if the user is created successfully
     if (user !== null) {
       console.log(user);
       return res.status(201).json(user);
     }
   } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ message: 'Username/Email not available', error: error });
+    console.error(error);
+    return res.status(400).json({ message: 'Username/Email not available' });
   }
 };
 
@@ -155,7 +153,7 @@ const register = async (req, res, next) => {
 const updateUserController = async (req, res, next) => {
   try {
     if (req.isAuthenticated() === false)
-    return res.status(401).json({ message: 'Not authorized' });
+      return res.status(401).json({ message: 'Not authorized' });
     const { id } = req.params;
     const user = await updateUser(id, req.body);
     if (user !== null) {
@@ -176,7 +174,7 @@ const updateUserController = async (req, res, next) => {
 const deleteUserController = async (req, res, next) => {
   try {
     if (req.isAuthenticated() === false)
-    return res.status(401).json({ message: 'Not authorized' });
+      return res.status(401).json({ message: 'Not authorized' });
     const { id } = req.params;
     const user = await deleteUser(id);
     if (user !== null) {
@@ -199,7 +197,6 @@ const deleteUserController = async (req, res, next) => {
  */
 const sendFriendRequest = async (req, res, next) => {
   try {
-
     //if the user is not authenticated return an error
     if (req.isAuthenticated() === false)
       return res.status(401).json({ message: 'Not authorized' });
@@ -270,7 +267,7 @@ const sendFriendRequest = async (req, res, next) => {
 const acceptFriendRequestController = async (req, res, next) => {
   try {
     if (req.isAuthenticated() === false)
-    return res.status(401).json({ message: 'Not authorized' });
+      return res.status(401).json({ message: 'Not authorized' });
     //get the current user and the friend ids from the request body
     const { currentID, friendID } = req.body;
 

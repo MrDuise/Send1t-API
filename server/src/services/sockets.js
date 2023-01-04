@@ -3,6 +3,8 @@ import http from 'http';
 import {mongoConnect} from './mongo';
 import {socketEvents} from './sockets';
 
+const Conversation = require('../models/conversations/conversations.mongo');
+
 const PORT = process.env.PORT || 8000;
 
 async function startServer() {
@@ -23,22 +25,38 @@ startServer();
 
 // Path: server\src\services\sockets.js
 import {addUser, removeUser, getUser, getUsersInRoom} from './users';
+import {makeConversation,
+    findConversationById,
+    findCoversationsByUser,
+    updateConversation,
+    deleteConversation,} from '../models/conversations/conversations.model';
 
 
 export const socketEvents = (io) => {
-    io.on('connection', (socket) => {
-        socket.on('join', ({name, room}, callback) => {
-            const {error, user} = addUser({id: socket.id, name, room});
+    io.on('connection', (socket, user) => {
 
-            if (error) return callback(error);
+        //on connection, set user status to true
+        //and emit status to client
+        //so that the client can update the UI
+        user.status = true;
+        socket.emit('status', user.status);
 
-            socket.emit('message', {user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
-            socket.broadcast.to(user.room).emit('message', {user: 'admin', text: `${user.name} has joined!`});
 
-            socket.join(user.room);
+        socket.on('join', (conversationID) => {
+           
 
-            io.to(user.room).emit('roomData', {room: user.room, users: getUsersInRoom(user.room)});
-            callback();
+           const conversation = findConversationById(conversationID);
+           
+        //the socket joins the room that is the conversationID
+           socket.join(conversationID);
+           //the socket emits a message to the room that is the conversationID
+           socket.emit('message', {user: 'admin', text: `${user.name}, welcome to room ${conversation._id}.`});
+           //set the active room to the conversationID
+           socket.activeRoom = conversationID;
+
+            
+
+            
         });
 
         socket.on('sendMessage', (message, callback) => {
@@ -47,7 +65,14 @@ export const socketEvents = (io) => {
             io.to(user.room).emit('message', {user: user.name, text: message});
             io.to(user.room).emit('roomData', {room: user.room, users: getUsersInRoom(user.room)});
 
-            callback();
+            Conversation.updateOne({ "_id": socket.activeRoom }, {
+                "$push": {
+                    "messages": message
+                }
+            });
+            io.to(socket.activeRoom).emit("message", message);
+
+            
         });
 
         socket.on('disconnect', () => {
