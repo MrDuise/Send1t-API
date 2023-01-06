@@ -1,9 +1,10 @@
-
 const request = require('supertest');
 
 const app = require('../../app');
 const { mongoConnectTEST, mongoDisconnect } = require('../../services/mongo');
+
 const  User  = require('../../models/users/users.mongo');
+
 const { isValidObjectId } = require('mongoose');
 
 const apiRoute = 'http://localhost:8000/api/v1';
@@ -13,9 +14,11 @@ describe('Users API', () => {
   let mongoose;
   let collection;
   beforeAll(async () => {
-   mongoose = await mongoConnectTEST();
-    
+
+    mongoose = await mongoConnectTEST();
   });
+
+
 
   afterAll(async () => {
     // console.log("User ", );
@@ -26,6 +29,7 @@ describe('Users API', () => {
   
 
  
+
 
   const validRegisterUser = {
     userName: 'JohnDoe',
@@ -44,8 +48,6 @@ describe('Users API', () => {
     userName: 'JohnDoe',
     password: 'wrongPassword',
   };
-
- 
 
   describe('POST /users/register', () => {
     it('should register a new user', async () => {
@@ -71,10 +73,11 @@ describe('Users API', () => {
         });
       
 
+
       const responseDate = new Date(res.body.updatedAt);
 
       expect(isValidObjectId(res.body._id)).toBe(true);
-      
+
       expect(res.body.password).not.toBe('password');
       expect(typeof res.body.password).toEqual('string');
     });
@@ -95,5 +98,180 @@ describe('Users API', () => {
         message: 'Please fill out all fields',
       });
     });
+
+    test('should return 400 if firstName is missing', async () => {
+      const res = await request(app)
+        .post('/v1/users/register')
+        .send({
+          userName: 'JohnDoe',
+          lastName: 'Doe',
+          password: 'password',
+          email: 'johndoe@yahoo.com',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Please fill out all fields',
+      });
+    });
+
+    test('should return 400 if lastName is missing', async () => {
+      const res = await request(app)
+        .post('/v1/users/register')
+        .send({
+          userName: 'JohnDoe',
+          firstName: 'John',
+          password: 'password',
+          email: 'johndoe@yahoo.com',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Please fill out all fields',
+      });
+    });
+
+    test('should return 400 if password is missing', async () => {
+      const res = await request(app)
+        .post('/v1/users/register')
+        .send({
+          userName: 'JohnDoe',
+          firstName: 'John',
+          lastName: 'Doe',
+          email: 'johndoe@yahoo.com',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Please fill out all fields',
+      });
+    });
+
+    test('should return 400 if email is missing', async () => {
+      const res = await request(app)
+        .post('/v1/users/register')
+        .send({
+          userName: 'JohnDoe',
+          firstName: 'John',
+          lastName: 'Doe',
+          password: 'password',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Please fill out all fields',
+      });
+    });
+
+    test('should return 400 if userName is already taken', async () => {
+      const res = await request(app)
+        .post('/v1/users/register')
+        .send({
+          userName: 'JohnDoe',
+          firstName: 'John',
+          lastName: 'Doe',
+          password: 'password',
+          email: 'johndoe@yahoo.com',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Username already exists',
+      });
+    });
   });
+
+  describe('POST /users/login', () => {
+    it('should login a user', async () => {
+      const res = await request(app)
+        .post(`/v1/users/login`)
+        .send(validLoginUser)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(res.session.user).toEqual({
+        _id: expect.any(String),
+        userName: 'JohnDoe',
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'johndoe@yahoo.com',
+        password: expect.any(String),
+        conversationLog: [],
+        contacts: [],
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String),
+        blockedUsers: [],
+        __v: 0,
+      });
+
+    });
+
+    test('should return 400 if userName is missing', async () => {
+      const res = await request(app)
+        .post('/v1/users/login')
+        .send({
+          password: 'password',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Please fill out all fields',
+      });
+    });
+
+    test('should return 400 if password is missing', async () => {
+      const res = await request(app)
+        .post('/v1/users/login')
+        .send({
+          userName: 'JohnDoe',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Please fill out all fields',
+      });
+    });
+
+    test('should return 400 if userName is not found', async () => {
+      const res = await request(app)
+        .post('/v1/users/login')
+        .send({
+          userName: 'JohnDoe',
+          password: 'password',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'User does not exist',
+      });
+    });
+
+    test('should return 400 if password is incorrect', async () => {
+      const res = await request(app)
+        .post('/v1/users/login')
+        .send({
+          userName: 'JohnDoe',
+          password: 'password',
+        })
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'Incorrect Data',
+      });
+    });
+
+  });
+
+
+        
+
 });

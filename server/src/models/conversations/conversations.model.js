@@ -1,6 +1,4 @@
 //Research how to do transactions in Node.js
-<<<<<<< Updated upstream
-=======
 const Conversation = require('./conversations.mongo');
 
 /**
@@ -21,17 +19,20 @@ const makeConversation = async (newConversation) => {
  * This coversation will be used to populate the Messages page and the settings page for that conversation
  *
  * @param {*} id
- * @return {*} 
+
+ * @return {*}
  */
 const findConversationById = async (id) => {
-    try {
-        const conversation = await Conversation.findById(id);
-        return conversation;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
+  try {
+    const conversation = await Conversation.findById(id);
+    return conversation;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
 /**
  * Finds all conversations that a user is a part of. Used when a user logs in to populate the Conversations log page
  *
@@ -39,6 +40,40 @@ const findConversationById = async (id) => {
  * @return {*} - an array of conversation objects
  */
 const findCoversationsByUser = async (userName) => {
+
+  try {
+    const conversations = await Conversation.find({
+      participants: { $in: [userName] },
+    });
+    return conversations;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const getParticipants = async (id) => {
+  try {
+    const conversation = await Conversation.findById(id);
+    return conversation.participants;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+const addParticipant = async (id, participant) => {
+  try {
+    const conversation = await Conversation.findById(id);
+    conversation.participants.push(participant);
+    await conversation.save();
+    return conversation;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
     try {
         const conversations = await Conversation.find({
             participants: { $in: [userName] },
@@ -75,15 +110,16 @@ const addParticipant = async (id, participant) => {
 
 
 
+
 const updateConversation = async (req, res) => {};
 
 const deleteConversation = async (req, res) => {};
 
 module.exports = {
-    makeConversation,
-    findConversationById,
-    findCoversationsByUser,
+  makeConversation,
+  findConversationById,
+  findCoversationsByUser,
   updateConversation,
   deleteConversation,
 };
->>>>>>> Stashed changes
+
