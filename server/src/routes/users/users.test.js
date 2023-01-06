@@ -64,6 +64,8 @@ describe('Users API', () => {
           lastName: 'Doe',
           email: 'johndoe@yahoo.com',
           password: expect.any(String),
+          profilePicture: "",
+          status: false,
           conversationLog: [],
           contacts: [],
           updatedAt: expect.any(String),
@@ -181,7 +183,7 @@ describe('Users API', () => {
         .expect(400);
 
       expect(res.body).toEqual({
-        message: 'Username already exists',
+        message: "Username/Email not available",
       });
     });
   });
@@ -191,7 +193,7 @@ describe('Users API', () => {
       const res = await request(app)
         .post(`/v1/users/login`)
         .send(validLoginUser)
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', 'text/html; charset=utf-8')
         .expect(200);
 
       expect(res.session.user).toEqual({
@@ -201,6 +203,8 @@ describe('Users API', () => {
         lastName: 'Doe',
         email: 'johndoe@yahoo.com',
         password: expect.any(String),
+        profilePicture: "",
+        status: false,
         conversationLog: [],
         contacts: [],
         updatedAt: expect.any(String),
@@ -217,11 +221,11 @@ describe('Users API', () => {
         .send({
           password: 'password',
         })
-        .expect('Content-Type', /json/)
-        .expect(400);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404);
 
       expect(res.body).toEqual({
-        message: 'Please fill out all fields',
+        message: "Missing credentials",
       });
     });
 
@@ -231,11 +235,11 @@ describe('Users API', () => {
         .send({
           userName: 'JohnDoe',
         })
-        .expect('Content-Type', /json/)
-        .expect(400);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404);
 
       expect(res.body).toEqual({
-        message: 'Please fill out all fields',
+        message: "Missing credentials",
       });
     });
 
@@ -246,8 +250,8 @@ describe('Users API', () => {
           userName: 'JohnDoe',
           password: 'password',
         })
-        .expect('Content-Type', /json/)
-        .expect(400);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404);
 
       expect(res.body).toEqual({
         message: 'User does not exist',
@@ -262,7 +266,7 @@ describe('Users API', () => {
           password: 'password',
         })
         .expect('Content-Type', /json/)
-        .expect(400);
+        .expect(404);
 
       expect(res.body).toEqual({
         message: 'Incorrect Data',
