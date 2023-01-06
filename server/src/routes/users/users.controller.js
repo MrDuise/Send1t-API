@@ -110,12 +110,14 @@ const getUserByIdController = async (req, res, next) => {
  * @returns
  */
 const register = async (req, res, next) => {
+
   //destructure the request body
   const { firstName, lastName, userName, password, email } = req.body;
 
   //If any of the fields are empty return an error
   if (!firstName || !lastName || !userName || !password || !email)
     return res.status(400).json({ message: 'Please fill out all fields' });
+
   try {
     //make a user object from the request body
     const newUser = {
