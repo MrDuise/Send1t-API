@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../../app');
 const { mongoConnectTEST, mongoDisconnect } = require('../../services/mongo');
 
-const  User  = require('../../models/users/users.mongo');
+const User = require('../../models/users/users.mongo');
 
 const { isValidObjectId } = require('mongoose');
 
@@ -14,22 +14,14 @@ describe('Users API', () => {
   let mongoose;
   let collection;
   beforeAll(async () => {
-
     mongoose = await mongoConnectTEST();
   });
-
-
 
   afterAll(async () => {
     // console.log("User ", );
     await User.collection.deleteMany({});
     await mongoDisconnect();
   });
-
-  
-
- 
-
 
   const validRegisterUser = {
     userName: 'JohnDoe',
@@ -57,24 +49,22 @@ describe('Users API', () => {
         .expect('Content-Type', /json/)
         .expect(201);
 
-        expect(res.body).toEqual({
-          _id: expect.any(String),
-          userName: 'JohnDoe',
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'johndoe@yahoo.com',
-          password: expect.any(String),
-          profilePicture: "",
-          status: false,
-          conversationLog: [],
-          contacts: [],
-          updatedAt: expect.any(String),
-          createdAt: expect.any(String),
-          blockedUsers: [],
-          __v: 0
-        });
-      
-
+      expect(res.body).toEqual({
+        _id: expect.any(String),
+        userName: 'JohnDoe',
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'johndoe@yahoo.com',
+        password: expect.any(String),
+        profilePicture: '',
+        status: false,
+        conversationLog: [],
+        contacts: [],
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String),
+        blockedUsers: [],
+        __v: 0,
+      });
 
       const responseDate = new Date(res.body.updatedAt);
 
@@ -183,7 +173,7 @@ describe('Users API', () => {
         .expect(400);
 
       expect(res.body).toEqual({
-        message: "Username/Email not available",
+        message: 'Username/Email not available',
       });
     });
   });
@@ -203,7 +193,7 @@ describe('Users API', () => {
         lastName: 'Doe',
         email: 'johndoe@yahoo.com',
         password: expect.any(String),
-        profilePicture: "",
+        profilePicture: '',
         status: false,
         conversationLog: [],
         contacts: [],
@@ -212,7 +202,6 @@ describe('Users API', () => {
         blockedUsers: [],
         __v: 0,
       });
-
     });
 
     test('should return 400 if userName is missing', async () => {
@@ -225,7 +214,7 @@ describe('Users API', () => {
         .expect(404);
 
       expect(res.body).toEqual({
-        message: "Missing credentials",
+        message: 'Missing credentials',
       });
     });
 
@@ -239,7 +228,7 @@ describe('Users API', () => {
         .expect(404);
 
       expect(res.body).toEqual({
-        message: "Missing credentials",
+        message: 'Missing credentials',
       });
     });
 
@@ -272,10 +261,5 @@ describe('Users API', () => {
         message: 'Incorrect Data',
       });
     });
-
   });
-
-
-        
-
 });
