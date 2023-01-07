@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../../app');
 const { mongoConnectTEST, mongoDisconnect } = require('../../services/mongo');
 
-const  User  = require('../../models/users/users.mongo');
+const User = require('../../models/users/users.mongo');
 
 const { isValidObjectId } = require('mongoose');
 
@@ -14,22 +14,14 @@ describe('Users API', () => {
   let mongoose;
   let collection;
   beforeAll(async () => {
-
     mongoose = await mongoConnectTEST();
   });
-
-
 
   afterAll(async () => {
     // console.log("User ", );
     await User.collection.deleteMany({});
     await mongoDisconnect();
   });
-
-  
-
- 
-
 
   const validRegisterUser = {
     userName: 'JohnDoe',
@@ -57,22 +49,22 @@ describe('Users API', () => {
         .expect('Content-Type', /json/)
         .expect(201);
 
-        expect(res.body).toEqual({
-          _id: expect.any(String),
-          userName: 'JohnDoe',
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'johndoe@yahoo.com',
-          password: expect.any(String),
-          conversationLog: [],
-          contacts: [],
-          updatedAt: expect.any(String),
-          createdAt: expect.any(String),
-          blockedUsers: [],
-          __v: 0
-        });
-      
-
+      expect(res.body).toEqual({
+        _id: expect.any(String),
+        userName: 'JohnDoe',
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'johndoe@yahoo.com',
+        password: expect.any(String),
+        profilePicture: '',
+        status: false,
+        conversationLog: [],
+        contacts: [],
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String),
+        blockedUsers: [],
+        __v: 0,
+      });
 
       const responseDate = new Date(res.body.updatedAt);
 
@@ -181,7 +173,7 @@ describe('Users API', () => {
         .expect(400);
 
       expect(res.body).toEqual({
-        message: 'Username already exists',
+        message: 'Username/Email not available',
       });
     });
   });
@@ -191,7 +183,7 @@ describe('Users API', () => {
       const res = await request(app)
         .post(`/v1/users/login`)
         .send(validLoginUser)
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', 'text/html; charset=utf-8')
         .expect(200);
 
       expect(res.session.user).toEqual({
@@ -201,6 +193,8 @@ describe('Users API', () => {
         lastName: 'Doe',
         email: 'johndoe@yahoo.com',
         password: expect.any(String),
+        profilePicture: '',
+        status: false,
         conversationLog: [],
         contacts: [],
         updatedAt: expect.any(String),
@@ -208,7 +202,6 @@ describe('Users API', () => {
         blockedUsers: [],
         __v: 0,
       });
-
     });
 
     test('should return 400 if userName is missing', async () => {
@@ -217,11 +210,11 @@ describe('Users API', () => {
         .send({
           password: 'password',
         })
-        .expect('Content-Type', /json/)
-        .expect(400);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404);
 
       expect(res.body).toEqual({
-        message: 'Please fill out all fields',
+        message: 'Missing credentials',
       });
     });
 
@@ -231,11 +224,11 @@ describe('Users API', () => {
         .send({
           userName: 'JohnDoe',
         })
-        .expect('Content-Type', /json/)
-        .expect(400);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404);
 
       expect(res.body).toEqual({
-        message: 'Please fill out all fields',
+        message: 'Missing credentials',
       });
     });
 
@@ -246,8 +239,8 @@ describe('Users API', () => {
           userName: 'JohnDoe',
           password: 'password',
         })
-        .expect('Content-Type', /json/)
-        .expect(400);
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect(404);
 
       expect(res.body).toEqual({
         message: 'User does not exist',
@@ -262,16 +255,11 @@ describe('Users API', () => {
           password: 'password',
         })
         .expect('Content-Type', /json/)
-        .expect(400);
+        .expect(404);
 
       expect(res.body).toEqual({
         message: 'Incorrect Data',
       });
     });
-
   });
-
-
-        
-
 });
