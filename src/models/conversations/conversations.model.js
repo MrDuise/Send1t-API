@@ -4,7 +4,7 @@ const Conversation = require('./conversations.mongo');
 /**
  * Takes a conversation object and adds it to the database
  *
- * @param {*} newConversation
+ * @param {*} newConversation - the conversation object to be added to the database
  */
 const makeConversation = async (newConversation) => {
   try {
@@ -32,7 +32,6 @@ const findConversationById = async (id) => {
   }
 };
 
-
 /**
  * Finds all conversations that a user is a part of. Used when a user logs in to populate the Conversations log page
  *
@@ -40,7 +39,6 @@ const findConversationById = async (id) => {
  * @return {*} - an array of conversation objects
  */
 const findCoversationsByUser = async (userName) => {
-
   try {
     const conversations = await Conversation.find({
       participants: { $in: [userName] },
@@ -61,11 +59,22 @@ const getParticipants = async (id) => {
     throw error;
   }
 };
-
+/**
+ * Adds a new user to an excisting conversation
+ *
+ * @param {*} id - the id of the conversation
+ * @param {*} participant - the user name of the new participant
+ * @return {*}
+ */
 const addParticipant = async (id, participant) => {
   try {
     const conversation = await Conversation.findById(id);
     conversation.participants.push(participant);
+    //if the conversation has more than 2 participants, it is a group conversation
+    if (conversation.participants.length > 2) {
+      conversation.isGroup = true;
+    }
+
     await conversation.save();
     return conversation;
   } catch (error) {
@@ -74,44 +83,20 @@ const addParticipant = async (id, participant) => {
   }
 };
 
-    try {
-        const conversations = await Conversation.find({
-            participants: { $in: [userName] },
-        });
-        return conversations;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-const getParticipants = async (id) => {
-    try {
-        const conversation = await Conversation.findById(id);
-        return conversation.participants;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-const addParticipant = async (id, participant) => {
-    try {
-        const conversation = await Conversation.findById(id);
-        conversation.participants.push(participant);
-        await conversation.save();
-        return conversation;
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
-
-
-
-
 const updateConversation = async (req, res) => {};
+
+const addMessage = async (id, message) => {
+  try {
+    const conversation = await Conversation.findById(id).populate('messages');
+    conversation.messages.push(message);
+    await conversation.save();
+
+    return conversation;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
 const deleteConversation = async (req, res) => {};
 
@@ -121,5 +106,5 @@ module.exports = {
   findCoversationsByUser,
   updateConversation,
   deleteConversation,
+  addMessage,
 };
-
