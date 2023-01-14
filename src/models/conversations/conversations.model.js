@@ -1,6 +1,8 @@
 //Research how to do transactions in Node.js
 const Conversation = require('./conversations.mongo');
 
+const Messages = require('../messages/messages.mongo');
+
 /**
  * Takes a conversation object and adds it to the database
  *
@@ -9,11 +11,13 @@ const Conversation = require('./conversations.mongo');
 const makeConversation = async (newConversation) => {
   try {
     const savedConversation = await Conversation.create(newConversation);
-    res.status(200).json(savedConversation);
+    return savedConversation;
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    throw error;
   }
 };
+
 /**
  * Finds a single conversation by its id. Used when a user clicks on a conversation to view it
  * This coversation will be used to populate the Messages page and the settings page for that conversation
@@ -27,10 +31,12 @@ const findConversationById = async (id) => {
     const conversation = await Conversation.findById(id);
     return conversation;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
+
+
 
 /**
  * Finds all conversations that a user is a part of. Used when a user logs in to populate the Conversations log page
@@ -45,17 +51,39 @@ const findCoversationsByUser = async (userName) => {
     });
     return conversations;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
+/**
+ * gets all messages of a conversation from the messages collection
+ *
+ * @param {*} id - the ID of the conversation that needs to be matched
+ * @return {*} - an array of 
+ */
+const getMessages = (id) => {
+  const messages =  Messages.find({ conversationId
+: id });
 
+messages.sort()
+messages.reverse()
+
+return messages;
+
+}
+
+/**
+ * gets all participants of a conversation
+ *
+ * @param {*} id - the id of the conversation
+ * @return {*} - the array of participants
+ */
 const getParticipants = async (id) => {
   try {
     const conversation = await Conversation.findById(id);
     return conversation.participants;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -64,7 +92,7 @@ const getParticipants = async (id) => {
  *
  * @param {*} id - the id of the conversation
  * @param {*} participant - the user name of the new participant
- * @return {*}
+ * @return {*} - the updated conversation object
  */
 const addParticipant = async (id, participant) => {
   try {
@@ -78,13 +106,20 @@ const addParticipant = async (id, participant) => {
     await conversation.save();
     return conversation;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
 
-const updateConversation = async (req, res) => {};
 
+/**
+ * Addes a message to the messages array of a conversation document in the database
+ * This function gets called by the Web-socket connection function when a users sends a message
+ *
+ * @param {*} id - the id of the conversation to be updated
+ * @param {*} message - the message object that is being added to the database
+ * @return {*} - the updated conversation object
+ */
 const addMessage = async (id, message) => {
   try {
     const conversation = await Conversation.findById(id).populate('messages');
@@ -93,12 +128,37 @@ const addMessage = async (id, message) => {
 
     return conversation;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
+/**
+ * Removes the participant from the conversations list of participants, removing them from the conversation
+ * This prevents a user from deleteing a conversation and removing it for everyone involed
+ * If the conversation has no participants left, it is deleted from the database
+ *
+ * @param {*} id - the id of the Conversation 
+ * @param {*} participant
+ * @return {*} 
+ */
+const deleteConversation = async (id, participant) => {
+  try {
+    const conversation = await Conversation.findById(id);
+    const index = conversation.participants.indexOf(participant);
+    conversation.participants.splice(index, 1);
+    if(conversation.participants.length === 0){
+      await Conversation.findByIdAndDelete(id);
+    }
 
-const deleteConversation = async (req, res) => {};
+    await conversation.save();
+    return conversation;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
+
+};
 
 module.exports = {
   makeConversation,

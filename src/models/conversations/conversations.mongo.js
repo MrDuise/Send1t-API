@@ -24,14 +24,6 @@ const conversationSchema = new mongoose.Schema({
         minlength: 2,
         
     },
-    messages: {
-        type: Array,
-        required: true,
-        unique: false,
-        trim: false,
-        minlength: 0,
-        default: []
-    },
     isGroup: {
         type: Boolean,
         required: true,

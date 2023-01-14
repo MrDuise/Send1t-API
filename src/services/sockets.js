@@ -1,27 +1,5 @@
-import socketio from 'socket.io';
-import http from 'http';
-import { mongoConnect } from './mongo';
-import { socketEvents } from './sockets';
-
 const Conversation = require('../models/conversations/conversations.mongo');
 
-const PORT = process.env.PORT || 8000;
-
-async function startServer() {
-  await mongoConnect();
-
-  const app = require('./app').default;
-  const server = http.createServer(app);
-  const io = socketio(server);
-
-  socketEvents(io);
-
-  server.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-  });
-}
-
-startServer();
 
 // Path: server\src\services\sockets.js
 import { addUser, removeUser, getUser, getUsersInRoom } from './users';
