@@ -3,6 +3,14 @@ const Conversation = require('./conversations.mongo');
 
 const Messages = require('../messages/messages.mongo');
 
+
+/*
+*-----------------------------------------
+ * CRUD OPERATIONS FOR CONVERSATIONS
+ * CREATE 
+ * ----------------------------------------
+ */
+
 /**
  * Takes a conversation object and adds it to the database
  *
@@ -17,6 +25,36 @@ const makeConversation = async (newConversation) => {
     throw error;
   }
 };
+
+/**
+ * Addes a message to the messages array of a conversation document in the database
+ * This function gets called by the Web-socket connection function when a users sends a message
+ *
+ * @param {*} id - the id of the conversation to be updated
+ * @param {*} message - the message object that is being added to the database
+ * @return {*} - the updated conversation object
+ */
+const addMessage = async (id, message) => {
+  try {
+    const conversation = await Conversation.findById(id).populate('messages');
+    conversation.messages.push(message);
+    await conversation.save();
+
+    return conversation;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+
+
+/*
+*-----------------------------------------
+ * CRUD OPERATIONS FOR CONVERSATIONS
+ * READ 
+ * ----------------------------------------
+ */
 
 /**
  * Finds a single conversation by its id. Used when a user clicks on a conversation to view it
@@ -35,8 +73,6 @@ const findConversationById = async (id) => {
     throw error;
   }
 };
-
-
 
 /**
  * Finds all conversations that a user is a part of. Used when a user logs in to populate the Conversations log page
@@ -87,6 +123,18 @@ const getParticipants = async (id) => {
     throw error;
   }
 };
+
+
+/*
+*-----------------------------------------
+ * CRUD OPERATIONS FOR CONVERSATIONS
+ * UPDATE 
+ * ----------------------------------------
+ */
+
+
+
+
 /**
  * Adds a new user to an excisting conversation
  *
@@ -112,26 +160,15 @@ const addParticipant = async (id, participant) => {
 };
 
 
-/**
- * Addes a message to the messages array of a conversation document in the database
- * This function gets called by the Web-socket connection function when a users sends a message
- *
- * @param {*} id - the id of the conversation to be updated
- * @param {*} message - the message object that is being added to the database
- * @return {*} - the updated conversation object
- */
-const addMessage = async (id, message) => {
-  try {
-    const conversation = await Conversation.findById(id).populate('messages');
-    conversation.messages.push(message);
-    await conversation.save();
 
-    return conversation;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+/*
+*-----------------------------------------
+ * CRUD OPERATIONS FOR CONVERSATIONS
+ * DELETE 
+ * ----------------------------------------
+ */
+
+
 /**
  * Removes the participant from the conversations list of participants, removing them from the conversation
  * This prevents a user from deleteing a conversation and removing it for everyone involed
