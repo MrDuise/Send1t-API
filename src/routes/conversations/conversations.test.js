@@ -28,13 +28,11 @@ describe('Conversations API', () => {
         await mongoDisconnect();
     });
     
-    const validConversation = {
-        _id: "1",
+    const validNewConversation = {
         admin: "test",
         createdAt: Date.now(),
         participants: ["tester1", "test2"],
-        isGroup: false,
-        dateUpdated: Date.now()
+        isGroup: false
 
     };
 
@@ -55,11 +53,11 @@ describe('Conversations API', () => {
     }
 
 
-    decribe('POST /conversations', () => {
+    describe('POST /conversations', () => {
         it('should create a new conversation', async () => {
             const res = await request(app)
-                .post(`/v1/conversations`)
-                .send(validConversation)
+                .post(`/v1/conversations/createConversation`)
+                .send(validNewConversation)
                 .expect('Content-Type', /json/)
                 .expect(201);
             
@@ -134,7 +132,7 @@ describe('Conversations API', () => {
                 error: "No conversation found"
             });
         });
-    }
+    }, 10000);
 
   
 });

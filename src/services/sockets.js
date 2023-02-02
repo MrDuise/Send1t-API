@@ -2,16 +2,16 @@ const Conversation = require('../models/conversations/conversations.mongo');
 
 
 // Path: server\src\services\sockets.js
-import { addUser, removeUser, getUser, getUsersInRoom } from './users';
-import {
+//import { addUser, removeUser, getUser, getUsersInRoom } from './users';
+const {
   makeConversation,
   findConversationById,
   findCoversationsByUser,
   updateConversation,
   deleteConversation,
-} from '../models/conversations/conversations.model';
+} = require( '../models/conversations/conversations.model');
 
-export const socketEvents = (io) => {
+const socketEvents = (io) => {
   io.on('connection', (socket, user) => {
     //on connection, set user status to true
     //and emit status to client
@@ -65,3 +65,5 @@ export const socketEvents = (io) => {
     });
   });
 };
+
+module.exports = { socketEvents };

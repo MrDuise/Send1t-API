@@ -3,11 +3,10 @@ const Conversation = require('./conversations.mongo');
 
 const Messages = require('../messages/messages.mongo');
 
-
 /*
-*-----------------------------------------
+ *-----------------------------------------
  * CRUD OPERATIONS FOR CONVERSATIONS
- * CREATE 
+ * CREATE
  * ----------------------------------------
  */
 
@@ -47,12 +46,10 @@ const addMessage = async (id, message) => {
   }
 };
 
-
-
 /*
-*-----------------------------------------
+ *-----------------------------------------
  * CRUD OPERATIONS FOR CONVERSATIONS
- * READ 
+ * READ
  * ----------------------------------------
  */
 
@@ -95,18 +92,16 @@ const findCoversationsByUser = async (userName) => {
  * gets all messages of a conversation from the messages collection
  *
  * @param {*} id - the ID of the conversation that needs to be matched
- * @return {*} - an array of 
+ * @return {*} - an array of
  */
 const getMessages = (id) => {
-  const messages =  Messages.find({ conversationId
-: id });
+  const messages = Messages.find({ conversationId: id });
 
-messages.sort()
-messages.reverse()
+  messages.sort();
+  messages.reverse();
 
-return messages;
-
-}
+  return messages;
+};
 
 /**
  * gets all participants of a conversation
@@ -124,16 +119,12 @@ const getParticipants = async (id) => {
   }
 };
 
-
 /*
-*-----------------------------------------
+ *-----------------------------------------
  * CRUD OPERATIONS FOR CONVERSATIONS
- * UPDATE 
+ * UPDATE
  * ----------------------------------------
  */
-
-
-
 
 /**
  * Adds a new user to an excisting conversation
@@ -159,31 +150,28 @@ const addParticipant = async (id, participant) => {
   }
 };
 
-
-
 /*
-*-----------------------------------------
+ *-----------------------------------------
  * CRUD OPERATIONS FOR CONVERSATIONS
- * DELETE 
+ * DELETE
  * ----------------------------------------
  */
-
 
 /**
  * Removes the participant from the conversations list of participants, removing them from the conversation
  * This prevents a user from deleteing a conversation and removing it for everyone involed
  * If the conversation has no participants left, it is deleted from the database
  *
- * @param {*} id - the id of the Conversation 
+ * @param {*} id - the id of the Conversation
  * @param {*} participant
- * @return {*} 
+ * @return {*}
  */
 const deleteConversation = async (id, participant) => {
   try {
     const conversation = await Conversation.findById(id);
     const index = conversation.participants.indexOf(participant);
     conversation.participants.splice(index, 1);
-    if(conversation.participants.length === 0){
+    if (conversation.participants.length === 0) {
       await Conversation.findByIdAndDelete(id);
     }
 
@@ -193,15 +181,15 @@ const deleteConversation = async (id, participant) => {
     console.error(error);
     throw error;
   }
-
-
 };
 
 module.exports = {
   makeConversation,
   findConversationById,
   findCoversationsByUser,
-  updateConversation,
+  getMessages,
   deleteConversation,
   addMessage,
+  addParticipant,
+  getParticipants,
 };

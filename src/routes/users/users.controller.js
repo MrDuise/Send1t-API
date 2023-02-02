@@ -259,9 +259,9 @@ const sendFriendRequest = async (req, res, next) => {
 };
 
 /**
- * Takes the user id of the current user and the user id of the friend to be added
+ * Takes the userName of the current user and the userName of the friend 
  *
- * @param {*} req - the body of the request should contain the current user id and the friend id
+ * @param {*} req - the body of the request should contain the friends userName
  * @param {*} res - should return a message indicating success of accepting the request
  * @param {*} next
  * @return {*}  - returns a message indicating success or failure of accepting the request
@@ -271,12 +271,12 @@ const acceptFriendRequestController = async (req, res, next) => {
     if (req.isAuthenticated() === false)
       return res.status(401).json({ message: 'Not authorized' });
     //get the current user and the friend ids from the request body
-    const { currentID, friendID } = req.body;
+    const  {friendUserName } = req.body;
 
     //in the signed in user's contacts array find the friend request then accept it and return the updated array
-    const currentUserContacts = acceptFriendRequest(currentID, friendID);
+    const currentUserContacts = acceptFriendRequest(req.session.user.userName, friendUserName);
     //in the friend's contacts array find the friend request then accept it and return the updated array
-    const friendContacts = acceptFriendRequest(friendID, currentID);
+    const friendContacts = acceptFriendRequest(friendUserName, req.session.user.userName);
     if (currentUserContacts !== null && friendContacts !== null) {
       return res.status(200).json({ message: 'Friend request accepted' });
     }

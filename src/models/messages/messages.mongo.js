@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 /** @type {*} 
  * Due to the potential for a large number of messages, this schema defines what a new message will look like as it
  * is added to the database. The message will be added to the messages collection in the database.
@@ -25,7 +25,7 @@ const messagesSchema = new mongoose.Schema({
         minlength: 1
     },
     createdAt: {
-        type: DateTime,
+        type: Date,
         required: true,
     },
     conversationId: {

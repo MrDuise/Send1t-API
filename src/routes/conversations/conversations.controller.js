@@ -20,7 +20,10 @@ const createConversation = async (req, res) => {
     return res.status(401).json({ message: 'Not authorized' });
 
   //TODO: chance local user to req.session.user to get the user from the session
-  const { admin, participants, isGroup } = req.body;
+  const { participants, isGroup } = req.body;
+  participants.push(req.session.user.userName);
+  const admin = req.session.user.userName;
+  
   const newConversation = {
     admin,
     participants,
@@ -28,7 +31,7 @@ const createConversation = async (req, res) => {
   };
   try {
     const savedConversation = await makeConversation(newConversation);
-    res.status(200).json(savedConversation);
+    res.status(201).json(savedConversation);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -110,4 +113,6 @@ module.exports = {
   createConversation,
   getConversation,
   getUserConversations,
+  saveMessage,
+  
 };
