@@ -27,7 +27,7 @@ const localLogin = async (req, res, next) => {
         console.log('info', info);
         console.log('user', user);
         console.log('req.body', req.body);
-        res.status(202).send(info);
+        res.status(404).send(info);
       }
     }
   })(req, res, next);

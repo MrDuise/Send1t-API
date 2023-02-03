@@ -9,7 +9,7 @@
     "test": "jest",
     "dev": "nodemon src/index.js",
     "test:coverage": "jest --coverage",
-    "test:users": "jest --testPathPattern users.test.js",
+    "test:users": "jest --testPathPattern users.test.js --coverage --detectOpenHandles",
     "test:conversations": "jest --testPathPattern conversations.test.js"
   },
   "author": "Michael Duisenberg",
