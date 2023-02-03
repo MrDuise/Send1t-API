@@ -1,6 +1,76 @@
 //import mongoose from 'mongoose';
 const User = require('./users.mongo.js');
 
+/*
+ *-----------------------------------------
+ * CRUD OPERATIONS FOR USERS
+ * CREATE
+ * ----------------------------------------
+ */
+
+/**
+ * Takes the user object passed in from the controller and adds it to the database
+ * used by the register controller
+ * @param {*} user
+ * @return {*}
+ */
+const createUser = async (user) => {
+  try {
+    const response = await User.create(user);
+    return response;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+/**
+ *
+ *
+ * @param {*} userName - the users username
+ * @param {*} contact - the contact object to be added to the users contacts array
+ * @return {*} - the updated contacts array
+ */
+const createContact = async (userName, contact) => {
+  try {
+    const user = await getUserByUsername(userName);
+    if (user !== null) {
+      user.contacts.push(contact);
+      await user.save();
+      return user.contacts;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/*
+ *-----------------------------------------
+ * CRUD OPERATIONS FOR USERS
+ * READ
+ * ----------------------------------------
+ */
+
+const getContactById = async (id, contactId) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      const contact = user.contacts.find((contact) => {
+        return contact._id.toString() === contactId;
+      });
+      return contact;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 /**
  * takes the users id and returns the user object
  *
@@ -20,67 +90,12 @@ const getUserById = async (id) => {
  * Takes a username string and finds the user in the database that matches that username
  *
  * @param {*} username
- * @return {*} 
+ * @return {*}
  */
 const getUserByUsername = async (username) => {
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ userName: username });
     return user;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-}
-
-
-/**
- * Takes the user object passed in from the controller and adds it to the database
- * used by the register controller
- * @param {*} user
- * @return {*}
- */
-const createUser = async (user) => {
-  try {
-    const response = await User.create(user);
-    return response;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
-/**
- * Takes the user id and the user object and updates the user in the database
- *
- * @param {*} id
- * @param {*} user
- * @return {*}
- */
-const updateUser = async (id, user) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(id, user, {
-      new: true,
-    });
-    if (updatedUser === null) throw new Error('User not found');
-
-    return updatedUser;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
-
-/**
- * Takes the user id and deletes the user from the database
- *
- * @param {*} id
- * @return {*}
- */
-const deleteUser = async (id) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (deletedUser === null) throw new Error('User not found');
-    return deletedUser;
   } catch (err) {
     console.log(err);
     throw err;
@@ -107,50 +122,61 @@ const getUserContacts = async (id) => {
     throw error;
   }
 };
-/**
- *
- *
- * @param {*} id - the users id
- * @param {*} contact - the contact object to be added to the users contacts array
- * @return {*} - the updated contacts array
+
+/*
+ *-----------------------------------------
+ * CRUD OPERATIONS FOR USERS
+ * UPDATE
+ * ----------------------------------------
  */
-const createContact = async (userName, contact) => {
+
+/**
+ * Takes the user id and the user object and updates the user in the database
+ *
+ * @param {*} id
+ * @param {*} user
+ * @return {*}
+ */
+const updateUser = async (id, user) => {
   try {
-    const user = await getUserByUsername(userName);
-    if (user !== null) {
-      user.contacts.push(contact);
-      await user.save();
-      return user.contacts;
-    } else {
-      throw new Error('User not found');
-    }
-  } catch (error) {
-    console.log(error);
-    throw error;
+    const updatedUser = await User.findByIdAndUpdate(id, user, {
+      new: true,
+    });
+    if (updatedUser === null) throw new Error('User not found');
+
+    return updatedUser;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
-
 
 /**
  *
  *
  * @param {*} id - the users id
  * @param {*} contactId - the id of the contact to be added
- * @return {*} 
+ * @return {*}
  */
-const acceptFriendRequest = async (id, contactId) => {
+const acceptFriendRequest = async (userName, contactUsername) => {
   try {
-    const user = await getUserById(id);
+    const user = await getUserByUsername(userName);
+
     if (user) {
       const contact = user.contacts.find((contact) => {
-        return contact.id.toString() === contactId;
+        return contact.userName === contactUsername;
       });
 
       contact.status = 'accepted';
 
-      const updatedUser = await User.findByIdAndUpdate(id, user, {
-        new: true,
-      });
+      const updatedUser = await User.findOneAndUpdate(
+        { userName: userName },
+        user,
+        {
+          new: true,
+        }
+      );
+
       if (updatedUser === null) throw new Error('User not found');
       return updatedUser;
     } else {
@@ -183,25 +209,32 @@ const declineFriendRequest = async (id, contactId) => {
     console.log(error);
     throw error;
   }
-}
+};
 
+/*
+ *-----------------------------------------
+ * CRUD OPERATIONS FOR USERS
+ * DELETE
+ * ----------------------------------------
+ */
 
-const getContactById = async (id, contactId) => {
+/**
+ * Takes the user id and deletes the user from the database
+ *
+ * @param {*} id
+ * @return {*}
+ */
+const deleteUser = async (id) => {
   try {
-    const user = await getUserById(id);
-    if (user) {
-      const contact = user.contacts.find((contact) => {
-        return contact._id.toString() === contactId;
-      });
-      return contact;
-    } else {
-      throw new Error('User not found');
-    }
-  } catch (error) {
-    console.log(error);
-    throw error;
+    const deletedUser = await User.findByIdAndDelete(id);
+    if (deletedUser === null) throw new Error('User not found');
+    return deletedUser;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
+
 /**
  * Takes the users id and the contact id and deletes the contact from the users contacts array
  *

@@ -2,6 +2,7 @@ const {
   makeConversation,
   findConversationById,
   findCoversationsByUser,
+  addMessage,
 } = require('../../models/conversations/conversations.model');
 /**
  * When a user creates a new conversation, this function is called to add the conversation to the database
@@ -18,8 +19,11 @@ const createConversation = async (req, res) => {
   if (req.isAuthenticated() === false)
     return res.status(401).json({ message: 'Not authorized' });
 
-    //TODO: chance local user to req.session.user to get the user from the session
-  const { admin, participants, isGroup } = req.body;
+  //TODO: chance local user to req.session.user to get the user from the session
+  const { participants, isGroup } = req.body;
+  participants.push(req.session.user.userName);
+  const admin = req.session.user.userName;
+  
   const newConversation = {
     admin,
     participants,
@@ -27,7 +31,7 @@ const createConversation = async (req, res) => {
   };
   try {
     const savedConversation = await makeConversation(newConversation);
-    res.status(200).json(savedConversation);
+    res.status(201).json(savedConversation);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -45,7 +49,7 @@ const getConversation = async (req, res) => {
   if (req.isAuthenticated() === false)
     return res.status(401).json({ message: 'Not authorized' });
 
-    //TODO: chance local user to req.session.user to get the user from the session
+  //TODO: chance local user to req.session.user to get the user from the session
   const { conversationId } = req.body;
   try {
     const conversation = await findConversationById(conversationId);
@@ -67,7 +71,7 @@ const getUserConversations = async (req, res) => {
   if (req.isAuthenticated() === false)
     return res.status(401).json({ message: 'Not authorized' });
 
-    //TODO: chance local user to req.session.user to get the user from the session
+  //TODO: chance local user to req.session.user to get the user from the session
   const { userName } = req.body;
   try {
     const conversations = await findCoversationsByUser(userName);
@@ -76,9 +80,39 @@ const getUserConversations = async (req, res) => {
     res.status(500).json(error);
   }
 };
+/**
+ * Takes a conversation id and a message object and adds the message to the conversation
+ * this method will be called by the web-sockets
+ * @param {*} req - the body of the request should contain the conversation id and the message object
+ * @param {*} res - the response will be the conversation object if the message was added or an error if not
+ * @return {*} 
+ */
+const saveMessage = async (req, res) => {
+  if (req.isAuthenticated() === false)
+    return res.status(401).json({ message: 'Not authorized' });
+
+  const testMessage = {
+    id: '123',
+    sender: 'test',
+    message: 'test message',
+    timestamp: 'test time',
+  };
+
+  const { conversationId, message } = req.body;
+
+  try {
+    const conversation = await addMessage(conversationId, message);
+    res.status(200).json(conversation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
 
 module.exports = {
   createConversation,
   getConversation,
   getUserConversations,
+  saveMessage,
+  
 };

@@ -181,12 +181,12 @@ describe('Users API', () => {
   describe('POST /users/login', () => {
     it('should login a user', async () => {
       const res = await request(app)
-        .post(`/v1/users/login`)
+        .post(`/v1/users/login/local`)
         .send(validLoginUser)
-        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200);
 
-      expect(res.session.user).toEqual({
+      expect(res.body).toEqual({
         _id: expect.any(String),
         userName: 'JohnDoe',
         firstName: 'John',
@@ -206,11 +206,11 @@ describe('Users API', () => {
 
     test('should return 400 if userName is missing', async () => {
       const res = await request(app)
-        .post('/v1/users/login')
+        .post('/v1/users/login/local')
         .send({
           password: 'password',
         })
-        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(404);
 
       expect(res.body).toEqual({
@@ -220,11 +220,11 @@ describe('Users API', () => {
 
     test('should return 400 if password is missing', async () => {
       const res = await request(app)
-        .post('/v1/users/login')
+        .post('/v1/users/login/local')
         .send({
           userName: 'JohnDoe',
         })
-        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(404);
 
       expect(res.body).toEqual({
@@ -232,29 +232,29 @@ describe('Users API', () => {
       });
     });
 
-    test('should return 400 if userName is not found', async () => {
+    test('should return 404 if userName is not found', async () => {
       const res = await request(app)
-        .post('/v1/users/login')
+        .post('/v1/users/login/local')
         .send({
-          userName: 'JohnDoe',
+          userName: 'JohnDoe2',
           password: 'password',
         })
-        .expect('Content-Type', 'text/html; charset=utf-8')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(404);
 
       expect(res.body).toEqual({
-        message: 'User does not exist',
+        message: 'Incorrect Data',
       });
     });
 
-    test('should return 400 if password is incorrect', async () => {
+    test('should return 404 if password is incorrect', async () => {
       const res = await request(app)
-        .post('/v1/users/login')
+        .post('/v1/users/login/local')
         .send({
           userName: 'JohnDoe',
-          password: 'password',
+          password: 'password5',
         })
-        .expect('Content-Type', /json/)
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(404);
 
       expect(res.body).toEqual({

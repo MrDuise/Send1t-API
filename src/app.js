@@ -59,6 +59,7 @@ passport.use(
         if (err) {
           return done(err);
         }
+        if(user){}
         if (!user) {
           console.log(user);
           return done(null, false, { message: 'Incorrect Data' });
@@ -72,7 +73,7 @@ passport.use(
           if (isMatch) {
             return done(null, user);
           } else {
-            return done(null, false);
+            return done(null, false, { message: 'Incorrect Data' });
           }
       });
       /*

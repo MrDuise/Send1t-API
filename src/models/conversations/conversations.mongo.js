@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
 const conversationSchema = new mongoose.Schema({
     admin: {
@@ -24,14 +24,6 @@ const conversationSchema = new mongoose.Schema({
         minlength: 2,
         
     },
-    messages: {
-        type: Array,
-        required: true,
-        unique: false,
-        trim: false,
-        minlength: 0,
-        default: []
-    },
     isGroup: {
         type: Boolean,
         required: true,
@@ -40,14 +32,7 @@ const conversationSchema = new mongoose.Schema({
         minlength: 0,
         default: false
     },
-    dateUpdated: {
-        type: Date,
-        required: false,
-        unique: false,
-        trim: false,
-        minlength: 0,
-        default: Date.now
-    }
+    
 }, {
     timestamps: true
 });

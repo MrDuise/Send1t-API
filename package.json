@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node src/index.js",
     "test:watch": "jest --watchAll",
-    "test": "jest"
+    "test": "jest",
+    "dev": "nodemon src/index.js",
+    "test:coverage": "jest --coverage",
+    "test:users": "jest --testPathPattern users.test.js --coverage --detectOpenHandles",
+    "test:conversations": "jest --testPathPattern conversations.test.js"
   },
   "author": "Michael Duisenberg",
   "license": "ISC",

@@ -1,39 +1,17 @@
-import socketio from 'socket.io';
-import http from 'http';
-import { mongoConnect } from './mongo';
-import { socketEvents } from './sockets';
-
 const Conversation = require('../models/conversations/conversations.mongo');
 
-const PORT = process.env.PORT || 8000;
-
-async function startServer() {
-  await mongoConnect();
-
-  const app = require('./app').default;
-  const server = http.createServer(app);
-  const io = socketio(server);
-
-  socketEvents(io);
-
-  server.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-  });
-}
-
-startServer();
 
 // Path: server\src\services\sockets.js
-import { addUser, removeUser, getUser, getUsersInRoom } from './users';
-import {
+//import { addUser, removeUser, getUser, getUsersInRoom } from './users';
+const {
   makeConversation,
   findConversationById,
   findCoversationsByUser,
   updateConversation,
   deleteConversation,
-} from '../models/conversations/conversations.model';
+} = require( '../models/conversations/conversations.model');
 
-export const socketEvents = (io) => {
+const socketEvents = (io) => {
   io.on('connection', (socket, user) => {
     //on connection, set user status to true
     //and emit status to client
@@ -87,3 +65,5 @@ export const socketEvents = (io) => {
     });
   });
 };
+
+module.exports = { socketEvents };
