@@ -26,20 +26,16 @@ const makeConversation = async (newConversation) => {
 };
 
 /**
- * Addes a message to the messages array of a conversation document in the database
+ * Addes a message to the messages database. Each message has a conversation ID field, linking it to a conversation
  * This function gets called by the Web-socket connection function when a users sends a message
- *
- * @param {*} id - the id of the conversation to be updated
  * @param {*} message - the message object that is being added to the database
- * @return {*} - the updated conversation object
+ * @return {*} - the new message
  */
-const addMessage = async (id, message) => {
+const addMessage = async (message) => {
   try {
-    const conversation = await Conversation.findById(id).populate('messages');
-    conversation.messages.push(message);
-    await conversation.save();
+   const newMessage = await Messages.create(message);
 
-    return conversation;
+    return newMessage;
   } catch (error) {
     console.error(error);
     throw error;
