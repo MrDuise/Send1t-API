@@ -4,6 +4,8 @@ const {
   findCoversationsByUser,
   addMessage,
 } = require('../../models/conversations/conversations.model');
+
+const {addConversation} = require('../../models/users/users.model');
 /**
  * When a user creates a new conversation, this function is called to add the conversation to the database
  *
@@ -31,6 +33,13 @@ const createConversation = async (req, res) => {
   };
   try {
     const savedConversation = await makeConversation(newConversation);
+
+    //add the conversation to the users conversations array for each participant
+    participants.forEach(async (participant) => {
+      await addConversation(participant, savedConversation._id);
+    });
+    
+   
     res.status(201).json(savedConversation);
   } catch (error) {
     res.status(500).json(error);
@@ -91,18 +100,21 @@ const saveMessage = async (req, res) => {
   if (req.isAuthenticated() === false)
     return res.status(401).json({ message: 'Not authorized' });
 
+  const { conversationId, message } = req.body;
+
   const testMessage = {
     id: '123',
     sender: 'test',
     message: 'test message',
     timestamp: 'test time',
+    conversationId: conversationId,
   };
 
-  const { conversationId, message } = req.body;
+  
 
   try {
-    const conversation = await addMessage(conversationId, message);
-    res.status(200).json(conversation);
+    const newMessage = await addMessage(message);
+    res.status(200).json(newMessage);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

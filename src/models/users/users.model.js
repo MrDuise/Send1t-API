@@ -47,6 +47,24 @@ const createContact = async (userName, contact) => {
   }
 };
 
+
+const addConversation = async (userName, conversation) => {
+  try {
+    const user = await getUserByUsername(userName);
+    if (user) {
+      user.conversations.push(conversation);
+      await user.save();
+      return user.conversations;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
 /*
  *-----------------------------------------
  * CRUD OPERATIONS FOR USERS
@@ -85,6 +103,21 @@ const getUserById = async (id) => {
     throw err;
   }
 };
+
+const getUserConversations = async (id) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      return user.conversations;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 
 /**
  * Takes a username string and finds the user in the database that matches that username
@@ -273,4 +306,6 @@ module.exports = {
   acceptFriendRequest,
   declineFriendRequest,
   deleteContact,
+  addConversation,
+  getUserConversations,
 };
