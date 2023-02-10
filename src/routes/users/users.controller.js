@@ -112,6 +112,7 @@ const getUserByIdController = async (req, res, next) => {
 const register = async (req, res, next) => {
 
   //destructure the request body
+  console.log(req.body)
   const { firstName, lastName, userName, password, email } = req.body;
 
   //If any of the fields are empty return an error

@@ -59,7 +59,9 @@ const addMessage = async (message) => {
  */
 const findConversationById = async (id) => {
   try {
-    const conversation = await Conversation.findById(id);
+    const res = await Conversation.findById(id);
+
+    const conversation = res.toJSON();
     return conversation;
   } catch (error) {
     console.error(error);

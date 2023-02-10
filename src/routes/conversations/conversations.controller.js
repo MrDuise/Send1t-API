@@ -5,7 +5,15 @@ const {
   addMessage,
 } = require('../../models/conversations/conversations.model');
 
-const {addConversation} = require('../../models/users/users.model');
+const { addConversation } = require('../../models/users/users.model');
+
+/*
+ *-----------------------------------------
+ * CRUD OPERATIONS FOR CONVERSATIONS
+ * CREATE
+ * ----------------------------------------
+ */
+
 /**
  * When a user creates a new conversation, this function is called to add the conversation to the database
  *
@@ -25,7 +33,7 @@ const createConversation = async (req, res) => {
   const { participants, isGroup } = req.body;
   participants.push(req.session.user.userName);
   const admin = req.session.user.userName;
-  
+
   const newConversation = {
     admin,
     participants,
@@ -38,13 +46,47 @@ const createConversation = async (req, res) => {
     participants.forEach(async (participant) => {
       await addConversation(participant, savedConversation._id);
     });
-    
-   
+
     res.status(201).json(savedConversation);
   } catch (error) {
     res.status(500).json(error);
   }
 };
+
+/**
+ * Takes a conversation id and a message object and adds the message to the conversation
+ * this method will be called by the web-sockets
+ * @param {*} req - the body of the request should contain the conversation id and the message object
+ * @param {*} res - the response will be the conversation object if the message was added or an error if not
+ * @return {*}
+ */
+const saveMessage = async (req, res) => {
+  if (req.isAuthenticated() === false)
+    return res.status(401).json({ message: 'Not authorized' });
+
+  const { conversationId, sender, message } = req.body;
+
+  const newMessage = {
+    sender: sender,
+    message: message,
+    conversationId: conversationId,
+  };
+
+  try {
+    const newMessage = await addMessage(message);
+    res.status(200).json(newMessage);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+/*
+ *-----------------------------------------
+ * CRUD OPERATIONS FOR CONVERSATIONS
+ * READ
+ * ----------------------------------------
+ */
 
 /**
  * Takes a conversation id and returns the conversation object if found
@@ -89,42 +131,10 @@ const getUserConversations = async (req, res) => {
     res.status(500).json(error);
   }
 };
-/**
- * Takes a conversation id and a message object and adds the message to the conversation
- * this method will be called by the web-sockets
- * @param {*} req - the body of the request should contain the conversation id and the message object
- * @param {*} res - the response will be the conversation object if the message was added or an error if not
- * @return {*} 
- */
-const saveMessage = async (req, res) => {
-  if (req.isAuthenticated() === false)
-    return res.status(401).json({ message: 'Not authorized' });
-
-  const { conversationId, message } = req.body;
-
-  const testMessage = {
-    id: '123',
-    sender: 'test',
-    message: 'test message',
-    timestamp: 'test time',
-    conversationId: conversationId,
-  };
-
-  
-
-  try {
-    const newMessage = await addMessage(message);
-    res.status(200).json(newMessage);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(error);
-  }
-};
 
 module.exports = {
   createConversation,
   getConversation,
   getUserConversations,
   saveMessage,
-  
 };

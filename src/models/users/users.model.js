@@ -52,9 +52,9 @@ const addConversation = async (userName, conversation) => {
   try {
     const user = await getUserByUsername(userName);
     if (user) {
-      user.conversations.push(conversation);
+      user.conversationLog.push(conversation);
       await user.save();
-      return user.conversations;
+      return user.conversationLog;
     } else {
       throw new Error('User not found');
     }
