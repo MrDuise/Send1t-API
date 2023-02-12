@@ -55,9 +55,7 @@ const addConversation = async (userName, conversation) => {
       user.conversationLog.push(conversation);
       await user.save();
       return user.conversationLog;
-    } else {
-      throw new Error('User not found');
-    }
+    } 
   } catch (error) {
     console.log(error);
     throw error;

@@ -1,4 +1,4 @@
-const request = require('supertest');
+const request = require('supertest-session');
 
 const { mongoConnectTEST, mongoDisconnect } = require('../../services/mongo');
 const app = require('../../app');
@@ -10,21 +10,22 @@ const Users = require('../../models/users/users.mongo');
 const Messages = require('../../models/messages/messages.mongo');
 
 const { isValidObjectId } = require('mongoose');
+const { authenticate } = require('passport');
 
 const apiRoute = 'http://localhost:8000/api/v1';
 
-describe('Conversations API', () => {
+describe('Conversations API ', () => {
   let connection;
   let mongoose;
   let collection;
 
   const testUser1 = {
-    firstName: 'John',
+    firstName: 'Jane',
     lastName: 'Doe',
-    userName: 'JohnDoe',
+    userName: 'JaneDoe',
     password: 'password',
-    email: 'johndoe@yahoo.com',
-  }
+    email: 'janedoe@yahoo.com',
+  };
 
   const testUser2 = {
     firstName: 'Zac',
@@ -32,62 +33,71 @@ describe('Conversations API', () => {
     userName: 'fuckyouZac',
     password: 'password1',
     email: 'zacdoe@gmail.com',
-  }
+  };
 
   beforeAll(async () => {
     mongoose = await mongoConnectTEST();
 
-    
-
     const test1 = await request(app).post(`/v1/users/register`).send(testUser1);
 
     const test2 = await request(app).post(`/v1/users/register`).send(testUser2);
-
-    const res = await localLogin({
-      userName: 'JohnDoe',
-      password: 'password',
-    });
   });
 
   afterAll(async () => {
     await Conversations.collection.deleteMany({});
     await Users.collection.deleteMany({});
     await mongoDisconnect();
-    const response = await fetch(`${apiRoute}/users/logout`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
   });
+  let validConversationID = null;
+  let testSession = null;
 
   const validNewConversation = {
-    admin: 'test',
-    createdAt: Date.now(),
-    participants: ['tester1', 'test2'],
+    participants: ['fuckyouZac'],
     isGroup: false,
   };
 
   const invalidConversation = {
-    _id: 'test',
-    createdAt: Date.now(),
-    participants: ['tester1', 'test2'],
+    participants: ['test2'],
     isGroup: false,
-    dateUpdated: Date.now(),
   };
 
   const validMessage = {
-    _id: '12',
-    conversationId: '1',
-    sender: 'tester1',
-    message: 'test',
-    createdAt: Date.now(),
+    sender: 'JaneDoe',
+    message: 'This is a test message',
+    conversationId: null,
   };
 
-  describe('POST /conversations', () => {
-    it('should create a new conversation', async () => {
+  describe('POST /conversations failure', () => {
+    it('should return 401 not authorized', async () => {
       const res = await request(app)
+        .post(`/v1/conversations/createConversation`)
+        .send(validNewConversation)
+        .expect('Content-Type', /json/)
+        .expect(401);
+
+      expect(res.body).toEqual({
+        message: 'Not authorized',
+      });
+    });
+  });
+
+  describe('POST /conversations', () => {
+    let authenticatedSession;
+    beforeEach(async () => {
+      testSession = request(app);
+      const response = await testSession
+        .post('/v1/users/login/local')
+        .send({
+          userName: 'JaneDoe',
+          password: 'password',
+        })
+        .expect(200);
+
+      authenticatedSession = testSession;
+    });
+
+    it('should create a new conversation', async () => {
+      const res = await authenticatedSession
         .post(`/v1/conversations/createConversation`)
         .send(validNewConversation)
         .expect('Content-Type', /json/)
@@ -95,63 +105,58 @@ describe('Conversations API', () => {
 
       expect(res.body).toEqual({
         _id: expect.any(String),
-        admin: 'test',
-        createdAt: expect.any(Date),
-        participants: ['tester1', 'test2'],
+        admin: 'JaneDoe',
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String),
+        participants: ['fuckyouZac', 'JaneDoe'],
         isGroup: false,
-        dateUpdated: expect.any(Date),
+        __v: 0,
+      });
+
+      validConversationID = res.body._id;
+    });
+
+    it('should return 400 if conversation is invalid', async () => {
+      const res = await authenticatedSession
+        .post(`/v1/conversations/createConversation`)
+        .send(invalidConversation)
+        .expect('Content-Type', /json/)
+        .expect(400);
+
+      expect(res.body).toEqual({
+        message: 'User not found',
+      });
+    });
+
+    it('should create a new message and save/send it', async () => {
+      validMessage.conversationId = validConversationID;
+      const res = await authenticatedSession
+        .post(`/v1/conversations/saveMessage`)
+        .send(validMessage)
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      expect(res.body).toEqual({
+        _id: expect.any(String),
+        conversationId: expect.any(String),
+        sender: 'JaneDoe',
+        message: 'This is a test message',
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        __v: 0,
+      });
+    });
+
+    //will not work
+    it('should get all conversations for a user', async () => {
+      const res = await authenticatedSession
+        .post(`/v1/conversations/getUserConversations`)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(res.body).toEqual({
+        conversationLog: expect.any(Array),
       });
     });
   });
-
-  /*
-
-    describe('POST /conversations/:conversationId/messages', () => {
-        it('should create a new message', async () => {
-            const res = await request(app)
-                .post(`/v1/conversations/${validConversation._id}/messages`)
-                .send(validMessage)
-                .expect('Content-Type', /json/)
-                .expect(201);
-            
-            expect(res.body).toEqual({
-                _id: expect.any(String),
-                conversationId: "1",
-                sender: "tester1",
-                message: "test",
-                createdAt: expect.any(Date)
-            });
-        });
-    });
-
-    describe('GET /conversations/:conversationId/messages', () => {
-        it('should get all messages in a conversation', async () => {
-            const res = await request(app)
-                .get(`/v1/conversations/${validConversation._id}/messages`)
-                .expect('Content-Type', /json/)
-                .expect(200);
-            
-            expect(res.body).toEqual({
-                _id: expect.any(String),
-                conversationId: "1",
-                sender: "tester1",
-                message: "test",
-                createdAt: expect.any(Date)
-            });
-        });
-    });
-
-    describe('GET /conversations/:conversationId/messages', () => {
-        it('should not get all messages in a conversation', async () => {
-            const res = await request(app)
-                .get(`/v1/conversations/123/messages`)
-                .expect('Content-Type', /json/)
-                .expect(404);
-            
-            expect(res.body).toEqual({
-                error: "No conversation found"
-            });
-        });
-    }, 10000);
-*/
 });

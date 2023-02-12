@@ -33,7 +33,8 @@ const makeConversation = async (newConversation) => {
  */
 const addMessage = async (message) => {
   try {
-   const newMessage = await Messages.create(message);
+    console.log(message);
+    const newMessage = await Messages.create(message);
 
     return newMessage;
   } catch (error) {

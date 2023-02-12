@@ -5,7 +5,7 @@ const {
   addMessage,
 } = require('../../models/conversations/conversations.model');
 
-const { addConversation } = require('../../models/users/users.model');
+const { addConversation, getUserByUsername } = require('../../models/users/users.model');
 
 /*
  *-----------------------------------------
@@ -29,17 +29,28 @@ const createConversation = async (req, res) => {
   if (req.isAuthenticated() === false)
     return res.status(401).json({ message: 'Not authorized' });
 
-  //TODO: chance local user to req.session.user to get the user from the session
+  
   const { participants, isGroup } = req.body;
-  participants.push(req.session.user.userName);
-  const admin = req.session.user.userName;
 
+ 
+ //the one who started the conversation is automatically added to the participants array
+  participants.push(req.session.user.userName);
+
+
+  const admin = req.session.user.userName;
+  participants.forEach(async (participant) => {
+    const user = await getUserByUsername(participant);
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' });
+    }
+  });
   const newConversation = {
     admin,
     participants,
     isGroup,
   };
   try {
+  
     const savedConversation = await makeConversation(newConversation);
 
     //add the conversation to the users conversations array for each participant
@@ -49,7 +60,8 @@ const createConversation = async (req, res) => {
 
     res.status(201).json(savedConversation);
   } catch (error) {
-    res.status(500).json(error);
+    console.error(error);
+    //return res.status(400).send({message: error.message});
   }
 };
 
@@ -73,8 +85,8 @@ const saveMessage = async (req, res) => {
   };
 
   try {
-    const newMessage = await addMessage(message);
-    res.status(200).json(newMessage);
+    const savedMessage = await addMessage(newMessage);
+    res.status(201).json(savedMessage);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
