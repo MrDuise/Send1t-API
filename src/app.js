@@ -64,7 +64,6 @@ passport.use(
           console.log(user);
           return done(null, false, { message: 'Incorrect Data' });
         }
-        console.log(userSchema);
         // Check if the password is correct
         bcrypt.compare(password, user.password, function(err, isMatch) {
           if (err) {

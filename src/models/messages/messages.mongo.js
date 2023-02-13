@@ -9,6 +9,8 @@ const mongoose = require('mongoose')
  * @param {string} id - The id of the message
  * 
 */
+const Conversations = require('../conversations/conversations.mongo');
+
 const messagesSchema = new mongoose.Schema({
     sender: {
         type: String,
@@ -24,12 +26,9 @@ const messagesSchema = new mongoose.Schema({
         trim: true,
         minlength: 1
     },
-    createdAt: {
-        type: Date,
-        required: true,
-    },
     conversationId: {
         type: String,
+        ref: 'Conversations',
         required: true,
         unique: false,
         trim: true,
@@ -37,6 +36,7 @@ const messagesSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
 
 const Messages = mongoose.model('Messages', messagesSchema, 'messages');
 

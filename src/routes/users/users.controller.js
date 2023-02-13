@@ -25,7 +25,6 @@ const localLogin = async (req, res, next) => {
         });
       } else {
         console.log('info', info);
-        console.log('user', user);
         console.log('req.body', req.body);
         res.status(404).send(info);
       }
@@ -137,7 +136,6 @@ const register = async (req, res, next) => {
 
     //if the user is created successfully
     if (user !== null) {
-      console.log(user);
       return res.status(201).json(user);
     }
   } catch (error) {

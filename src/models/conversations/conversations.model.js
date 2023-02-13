@@ -33,7 +33,8 @@ const makeConversation = async (newConversation) => {
  */
 const addMessage = async (message) => {
   try {
-   const newMessage = await Messages.create(message);
+    console.log(message);
+    const newMessage = await Messages.create(message);
 
     return newMessage;
   } catch (error) {
@@ -60,6 +61,7 @@ const addMessage = async (message) => {
 const findConversationById = async (id) => {
   try {
     const conversation = await Conversation.findById(id);
+
     return conversation;
   } catch (error) {
     console.error(error);
@@ -91,12 +93,17 @@ const findCoversationsByUser = async (userName) => {
  * @return {*} - an array of
  */
 const getMessages = (id) => {
-  const messages = Messages.find({ conversationId: id });
+  try {
+    const messages = Messages.find({ conversationId: { $in: [id] } });
 
-  messages.sort();
-  messages.reverse();
+    messages.sort();
+    
 
-  return messages;
+    return messages;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 /**
