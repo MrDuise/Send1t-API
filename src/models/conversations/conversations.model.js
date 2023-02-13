@@ -60,9 +60,8 @@ const addMessage = async (message) => {
  */
 const findConversationById = async (id) => {
   try {
-    const res = await Conversation.findById(id);
+    const conversation = await Conversation.findById(id);
 
-    const conversation = res.toJSON();
     return conversation;
   } catch (error) {
     console.error(error);
@@ -94,12 +93,17 @@ const findCoversationsByUser = async (userName) => {
  * @return {*} - an array of
  */
 const getMessages = (id) => {
-  const messages = Messages.find({ conversationId: id });
+  try {
+    const messages = Messages.find({ conversationId: { $in: [id] } });
 
-  messages.sort();
-  messages.reverse();
+    messages.sort();
+    
 
-  return messages;
+    return messages;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 /**

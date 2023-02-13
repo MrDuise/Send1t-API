@@ -124,7 +124,7 @@ describe('Conversations API ', () => {
         .expect(400);
 
       expect(res.body).toEqual({
-        message: 'User not found',
+        error: 'User not found',
       });
     });
 
@@ -151,11 +151,64 @@ describe('Conversations API ', () => {
     it('should get all conversations for a user', async () => {
       const res = await authenticatedSession
         .post(`/v1/conversations/getUserConversations`)
+        .send("JaneDoe")
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+        let count = 0;
+        res.body.conversationList.forEach((conversation) => {
+          if(conversation.participants.includes("JaneDoe")){
+            count++;
+          }
+        })
+
+      expect(res.body).toEqual({
+        conversationList: []
+      });
+      expect(count).toEqual(res.body.conversationList.length);
+    });
+
+    it('should get a conversation', async () => {
+      //variable used by API is called conversationId
+      const conversationId = validConversationID;
+      console.log(conversationId);
+      const res = await authenticatedSession
+        .post(`/v1/conversations/getConversation`)
+        .send({conversationId: conversationId})
         .expect('Content-Type', /json/)
         .expect(200);
 
       expect(res.body).toEqual({
-        conversationLog: expect.any(Array),
+        _id: expect.any(String),
+        admin: 'JaneDoe',
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String),
+        participants: ['fuckyouZac', 'JaneDoe'],
+        isGroup: false,
+        __v: 0,
+      });
+    });
+
+    it('should get all messages for a conversation', async () => {
+      const conversationId = validConversationID;
+      const res = await authenticatedSession
+        .post(`/v1/conversations/getMessageLog`)
+        .send({conversationId: conversationId})
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(res.body).toEqual({
+        messages: [
+          {
+            _id: expect.any(String),
+            conversationId: expect.any(String),
+            sender: 'JaneDoe',
+            message: 'This is a test message',
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+            __v: 0,
+          },
+        ],
       });
     });
   });
