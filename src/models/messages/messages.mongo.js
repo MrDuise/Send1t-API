@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const paginate = require('mongoose-paginate-v2');
 /** @type {*} 
  * Due to the potential for a large number of messages, this schema defines what a new message will look like as it
  * is added to the database. The message will be added to the messages collection in the database.
@@ -9,7 +10,7 @@ const mongoose = require('mongoose')
  * @param {string} id - The id of the message
  * 
 */
-const Conversations = require('../conversations/conversations.mongo');
+const Conversation = require('../conversations/conversations.mongo');
 
 const messagesSchema = new mongoose.Schema({
     sender: {
@@ -28,7 +29,7 @@ const messagesSchema = new mongoose.Schema({
     },
     conversationId: {
         type: String,
-        ref: 'Conversations',
+        ref: 'Conversation',
         required: true,
         unique: false,
         trim: true,
@@ -37,7 +38,7 @@ const messagesSchema = new mongoose.Schema({
     timestamps: true
 });
 
-
+messagesSchema.plugin(paginate);
 const Messages = mongoose.model('Messages', messagesSchema, 'messages');
 
 module.exports = Messages;

@@ -92,8 +92,9 @@ const findCoversationsByUser = async (userName) => {
  * @param {*} id - the ID of the conversation that needs to be matched
  * @return {*} - an array of
  */
-const getMessages = (id) => {
-  try {
+const getMessages = async (conversationId) => {
+  const PAGE_SIZE = 100;
+  /*   try {
     const messages = Messages.find({ conversationId: { $in: [id] } });
 
     messages.sort();
@@ -103,6 +104,29 @@ const getMessages = (id) => {
   } catch (error) {
     console.error(error);
     throw error;
+  } */
+
+  const page = 1;
+  const options = {
+    page: page,
+    limit: PAGE_SIZE,
+    sort: { createdAt: -1 },
+    populate: {
+      path: 'conversationId',
+      match: { _id: conversationId },
+      select: '_id',
+    },
+  };
+
+  try {
+    const messages = await Messages.paginate(
+      { conversationId: conversationId },
+      options
+    );
+    return messages;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 };
 

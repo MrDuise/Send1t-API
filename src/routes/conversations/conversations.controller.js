@@ -145,6 +145,14 @@ const getUserConversations = async (req, res) => {
   }
 };
 
+
+/**
+ * Returns the message log for a conversation
+ * TODO: add pagination
+ * @param {*} req
+ * @param {*} res
+ * @return {*} 
+ */
 const getMessageLog = async (req, res) => {
   //check if the user is signed in
   if (req.isAuthenticated() === false)
