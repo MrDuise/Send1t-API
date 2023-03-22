@@ -9,6 +9,7 @@ const {
   findCoversationsByUser,
   updateConversation,
   deleteConversation,
+  addMessage,
 } = require( '../models/conversations/conversations.model');
 
 const socketEvents = (io) => {
@@ -33,10 +34,11 @@ const socketEvents = (io) => {
       socket.activeRoom = conversationID;
     }); */
 
-    socket.on('sendMessage', (message) => {
+    socket.on('sendMessage', async (message) => {
         //emit the message to the room that is the conversationID
       console.log("In the socket.io event", message);
-      io.emit('sendMessage', message);
+     const newMessage =  await addMessage(message);
+      io.emit('sendMessage', newMessage);
      
         //update the conversation with the new message in the database
     /*   Conversation.updateOne(
