@@ -19,7 +19,7 @@ const socketEvents = (io) => {
     //so that the client can update the UI
     //user.status = true;
     //socket.emit('status', user.status);
-
+    console.log('a user connected');
     /* socket.on('join', (conversationID) => {
       const conversation = findConversationById(conversationID);
 
@@ -49,7 +49,6 @@ const socketEvents = (io) => {
           },
         }
       ); */
-      io.to(socket.activeRoom).emit('message', message);
     });
 
     /* socket.on('disconnect', () => {

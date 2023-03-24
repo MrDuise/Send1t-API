@@ -94,23 +94,12 @@ const findCoversationsByUser = async (userName) => {
  */
 const getMessages = async (conversationId) => {
   const PAGE_SIZE = 100;
-  /*   try {
-    const messages = Messages.find({ conversationId: { $in: [id] } });
-
-    messages.sort();
-    
-
-    return messages;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  } */
-
+  
   const page = 1;
   const options = {
     page: page,
     limit: PAGE_SIZE,
-    sort: { createdAt: -1 },
+    sort: { createdAt: 1 },
     populate: {
       path: 'conversationId',
       match: { _id: conversationId },
