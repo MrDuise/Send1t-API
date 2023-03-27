@@ -9,17 +9,18 @@ const {
   findCoversationsByUser,
   updateConversation,
   deleteConversation,
+  addMessage,
 } = require( '../models/conversations/conversations.model');
 
 const socketEvents = (io) => {
-  io.on('connection', (socket, user) => {
+  io.on('connection', (socket) => {
     //on connection, set user status to true
     //and emit status to client
     //so that the client can update the UI
-    user.status = true;
-    socket.emit('status', user.status);
-
-    socket.on('join', (conversationID) => {
+    //user.status = true;
+    //socket.emit('status', user.status);
+    console.log('a user connected');
+    /* socket.on('join', (conversationID) => {
       const conversation = findConversationById(conversationID);
 
       //the socket joins the room that is the conversationID
@@ -31,25 +32,31 @@ const socketEvents = (io) => {
       });
       //set the active room to the conversationID
       socket.activeRoom = conversationID;
-    });
+    }); */
 
-    socket.on('sendMessage', (message, user, socket) => {
+    socket.on('sendMessage', async (message) => {
         //emit the message to the room that is the conversationID
-      io.to(socket.activeRoom).emit('message', { user: user.name, text: message });
+      console.log("In the socket.io event", message);
+     const newMessage =  await addMessage(message);
+      io.emit('sendMessage', newMessage);
      
         //update the conversation with the new message in the database
-      Conversation.updateOne(
+    /*   Conversation.updateOne(
         { _id: socket.activeRoom },
         {
           $push: {
             messages: message,
           },
         }
-      );
-      io.to(socket.activeRoom).emit('message', message);
+      ); */
     });
 
-    socket.on('disconnect', () => {
+   socket.on('typing', (data) => {
+      socket.broadcast.emit('typing', data);
+    });
+    
+
+    /* socket.on('disconnect', () => {
       const user = removeUser(socket.id);
 
       if (user) {
@@ -62,8 +69,8 @@ const socketEvents = (io) => {
           users: getUsersInRoom(user.room),
         });
       }
-    });
+    }); */
   });
 };
 
-module.exports = { socketEvents };
+module.exports = {socketEvents}

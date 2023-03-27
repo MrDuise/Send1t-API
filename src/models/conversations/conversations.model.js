@@ -36,6 +36,10 @@ const addMessage = async (message) => {
     console.log(message);
     const newMessage = await Messages.create(message);
 
+    await Conversation.findByIdAndUpdate(message.conversationId, {
+      $set: { lastMessage: newMessage },
+    });
+
     return newMessage;
   } catch (error) {
     console.error(error);
@@ -79,7 +83,8 @@ const findCoversationsByUser = async (userName) => {
   try {
     const conversations = await Conversation.find({
       participants: { $in: [userName] },
-    });
+    }).sort({ updatedAt: -1});
+    
     return conversations;
   } catch (error) {
     console.error(error);
@@ -94,23 +99,12 @@ const findCoversationsByUser = async (userName) => {
  */
 const getMessages = async (conversationId) => {
   const PAGE_SIZE = 100;
-  /*   try {
-    const messages = Messages.find({ conversationId: { $in: [id] } });
-
-    messages.sort();
-    
-
-    return messages;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  } */
-
+  
   const page = 1;
   const options = {
     page: page,
     limit: PAGE_SIZE,
-    sort: { createdAt: -1 },
+    sort: { createdAt: 1 },
     populate: {
       path: 'conversationId',
       match: { _id: conversationId },
