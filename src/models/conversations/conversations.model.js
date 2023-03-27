@@ -36,6 +36,10 @@ const addMessage = async (message) => {
     console.log(message);
     const newMessage = await Messages.create(message);
 
+    await Conversation.findByIdAndUpdate(message.conversationId, {
+      $set: { lastMessage: newMessage },
+    });
+
     return newMessage;
   } catch (error) {
     console.error(error);
@@ -79,7 +83,8 @@ const findCoversationsByUser = async (userName) => {
   try {
     const conversations = await Conversation.find({
       participants: { $in: [userName] },
-    });
+    }).sort({ updatedAt: -1});
+    
     return conversations;
   } catch (error) {
     console.error(error);

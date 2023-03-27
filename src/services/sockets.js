@@ -51,6 +51,11 @@ const socketEvents = (io) => {
       ); */
     });
 
+   socket.on('typing', (data) => {
+      socket.broadcast.emit('typing', data);
+    });
+    
+
     /* socket.on('disconnect', () => {
       const user = removeUser(socket.id);
 
