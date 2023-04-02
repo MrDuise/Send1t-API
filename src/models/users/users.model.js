@@ -182,6 +182,23 @@ const updateUser = async (id, user) => {
   }
 };
 
+const setUserStatus = async (id, status) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      user.status = status;
+      await user.save();
+      return user;
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
 /**
  *
  *
@@ -306,4 +323,5 @@ module.exports = {
   deleteContact,
   addConversation,
   getUserConversations,
+  setUserStatus
 };

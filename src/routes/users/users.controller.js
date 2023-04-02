@@ -8,6 +8,7 @@ const {
   createContact,
   acceptFriendRequest,
   declineFriendRequest,
+  setUserStatus
 } = require('../../models/users/users.model');
 
 const passport = require('passport');
@@ -165,6 +166,23 @@ const updateUserController = async (req, res, next) => {
   }
 };
 
+
+const changeUserStatusController = async (req, res, next) => {
+  try {
+    if (req.isAuthenticated() === false)
+      return res.status(401).json({ message: 'Not authorized' });
+   let user = req.session.user;
+    user = await setUserStatus(user._id, req.body.status);
+    if (user !== null) {
+      return res.status(200).json(user);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ message: 'User not found', error });
+  }
+};
+
+
 /**
  * Takes the user id and returns the users contacts array
  * @param {*} res - the response object
@@ -315,4 +333,5 @@ module.exports = {
   deleteUserController,
   sendFriendRequest,
   acceptFriendRequestController,
+  changeUserStatusController
 };
