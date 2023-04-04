@@ -32,6 +32,15 @@ const conversationSchema = new mongoose.Schema({
         minlength: 0,
         default: false
     },
+    lastMessage: {
+        type: Object,
+        required: false,
+        unique: false,
+        trim: true,
+        minlength: 0,
+        default: ''
+
+    }
     
 }, {
     timestamps: true
