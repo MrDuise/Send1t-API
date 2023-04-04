@@ -7,13 +7,15 @@ This is my Senior Capstone at Grand Canyon University. The purpose of this proje
 
 ## Installation
 
-Install my project by downloading it to your local machine. 
-Node is required to run both sides of this project. running the following command
-will run both the client and the server at the same time
+To install this project insure that you have Node and NPM installed. This is an Express API and will not work without Node
+1. fork the main branch, then clone the repo
+2. ```npm install``` to download the dependinces 
+3. ```npm run start``` to start it up
 
-```bash
-  npm run app
-```
+This will get it running on your localhost, allowing access through Postman or some other API testing tool.
+
+The postman collection used for testing can be found within the 'Extras' folder
+
     
 ## Demo
 
