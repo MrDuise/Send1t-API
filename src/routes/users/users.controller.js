@@ -155,8 +155,8 @@ const updateUserController = async (req, res, next) => {
   try {
     if (req.isAuthenticated() === false)
       return res.status(401).json({ message: 'Not authorized' });
-    const { id } = req.params;
-    const user = await updateUser(id, req.body);
+    let user = req.session.user;
+    user = await updateUser(user._id, req.body);
     if (user !== null) {
       return res.status(200).json(user);
     }

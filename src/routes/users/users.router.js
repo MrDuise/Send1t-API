@@ -23,7 +23,7 @@ usersRouter.get('/logout', logout);
 usersRouter.get('/contacts', getUserContactsController);
 usersRouter.post('/register', register);
 usersRouter.get('/getUserById/:id', getUserByIdController);
-usersRouter.put('/updateUser/:id', updateUserController);
+usersRouter.patch('/updateUser', updateUserController);
 usersRouter.delete('/deleteUser/:id', deleteUserController);
 usersRouter.post('/sendFriendRequest', sendFriendRequest);
 usersRouter.post('/acceptFriendRequest', acceptFriendRequestController);

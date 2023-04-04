@@ -38,6 +38,14 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 3
     },
+    tagLine: {
+        type: String,
+        required: false,
+        unique: false,
+        trim: false,
+        minlength: 0,
+        default: ""
+    },
     conversationLog: {
         type: Array,
         required: false,
