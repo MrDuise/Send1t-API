@@ -1,7 +1,9 @@
 
 # Send1t
 
-This is my Senior Capstone at Grand Canyon University. The purpose of this project is to make a mobile application that satisfies the basic needs of a modern communication platform. This means that it will require a user to send instant messages with other users one-on-one in real-time, as well as be able to send a message to a group of people at the same time. This Repo is the API. The Front-end can be found here:
+This is my Senior Capstone at Grand Canyon University. The purpose of this project is to make a mobile application that satisfies the basic needs of a modern communication platform. This means that it will require a user to send instant messages with other users one-on-one in real-time, as well as be able to send a message to a group of people at the same time. This Repo is the API. 
+
+The Front-End can be found here: https://github.com/MrDuise/Send1t-Client
 
 
 
