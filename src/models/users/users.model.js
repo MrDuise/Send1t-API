@@ -125,7 +125,7 @@ const getUserConversations = async (id) => {
  */
 const getUserByUsername = async (username) => {
   try {
-    const user = User.findOne({ userName: username });
+    const user = await User.findOne({ userName: username });
     return user;
   } catch (err) {
     console.log(err);

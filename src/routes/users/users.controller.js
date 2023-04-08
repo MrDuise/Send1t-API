@@ -111,6 +111,7 @@ const searchForUserController = async (req, res, next) => {
     if (user !== null) {
       return res.status(200).json(user);
     }
+    throw new Error('User not found');
   } catch (error) {
     console.log(error);
     return res.status(404).json({ message: 'User not found' });
