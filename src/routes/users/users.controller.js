@@ -8,7 +8,8 @@ const {
   createContact,
   acceptFriendRequest,
   declineFriendRequest,
-  setUserStatus
+  setUserStatus,
+  getFriendRequests,
 } = require('../../models/users/users.model');
 
 const passport = require('passport');
@@ -318,6 +319,24 @@ const acceptFriendRequestController = async (req, res, next) => {
   }
 };
 
+
+const getFriendRequestsController = async (req, res, next) => {
+  try {
+    if (req.isAuthenticated() === false)
+      return res.status(401).json({ message: 'Not authorized' });
+    const { _id } = req.session.user;
+    const friendRequests = await getFriendRequests(_id);
+    if (friendRequests !== null) {
+      return res.status(200).json(friendRequests);
+    }
+  } catch (error) {
+    console.log(error);
+  
+  }
+};
+
+
+
 //TODO: fix the decline of friend request
 const declineFriendRequestController = async (req, res, next) => {
   try {
@@ -351,4 +370,5 @@ module.exports = {
   acceptFriendRequestController,
   changeUserStatusController,
   searchForUserController,
+  getFriendRequestsController,
 };

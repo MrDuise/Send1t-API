@@ -154,6 +154,24 @@ const getUserContacts = async (id) => {
   }
 };
 
+const getFriendRequests = async (id) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      return user.contacts.filter((contact) => {
+        return contact.status === 'pending';
+      });
+
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
 /*
  *-----------------------------------------
  * CRUD OPERATIONS FOR USERS
@@ -323,5 +341,6 @@ module.exports = {
   deleteContact,
   addConversation,
   getUserConversations,
-  setUserStatus
+  setUserStatus,
+  getFriendRequests
 };
