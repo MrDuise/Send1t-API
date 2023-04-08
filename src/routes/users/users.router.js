@@ -12,7 +12,8 @@ const {
   deleteUserController,
   sendFriendRequest,
   acceptFriendRequestController,
-  changeUserStatusController
+  changeUserStatusController,
+  searchForUserController,
 } = require('./users.controller');
 
 usersRouter.post("/login/local", localLogin);
@@ -28,6 +29,7 @@ usersRouter.delete('/deleteUser/:id', deleteUserController);
 usersRouter.post('/sendFriendRequest', sendFriendRequest);
 usersRouter.post('/acceptFriendRequest', acceptFriendRequestController);
 usersRouter.post('/changeUserStatus', changeUserStatusController);
+usersRouter.post('/searchForUser', searchForUserController);
 
 
 module.exports = usersRouter;

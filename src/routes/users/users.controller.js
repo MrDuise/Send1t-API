@@ -103,6 +103,22 @@ const getUserByIdController = async (req, res, next) => {
   }
 };
 
+
+const searchForUserController = async (req, res, next) => {
+  try {
+    const { userName } = req.body;
+    const user = await getUserByUsername(userName);
+    if (user !== null) {
+      return res.status(200).json(user);
+    }
+    throw new Error('User not found');
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({ message: 'User not found' });
+  }
+};
+
+
 /**
  *
  * @param {*} res - the response object
@@ -333,5 +349,6 @@ module.exports = {
   deleteUserController,
   sendFriendRequest,
   acceptFriendRequestController,
-  changeUserStatusController
+  changeUserStatusController,
+  searchForUserController,
 };
