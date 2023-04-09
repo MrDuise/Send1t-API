@@ -31,7 +31,7 @@ usersRouter.post('/sendFriendRequest', sendFriendRequest);
 usersRouter.post('/acceptFriendRequest', acceptFriendRequestController);
 usersRouter.post('/changeUserStatus', changeUserStatusController);
 usersRouter.post('/searchForUser', searchForUserController);
-usersRouter.get('/getFriendRequests', getFriendRequestsController);
+usersRouter.post('/getFriendRequests', getFriendRequestsController);
 
 
 module.exports = usersRouter;
