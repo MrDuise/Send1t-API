@@ -75,19 +75,7 @@ passport.use(
             return done(null, false, { message: 'Incorrect Data' });
           }
       });
-      /*
-        userSchema.comparePassword(password, (err, isMatch) => {
-          if (err) {
-            return done(err);
-          }
-          if (isMatch) {
-            return done(null, user);
-          } else {
-            return done(null, false);
-          }
-        });
-        */
-      });
+      }).populate({path: 'contacts', select: 'userName firstName lastName tagline profilePicture friendStatus status'});
     }
   )
 );
