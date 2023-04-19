@@ -23,6 +23,7 @@ const localLogin = async (req, res, next) => {
       if (user) {
         req.login(user, (err) => {
           req.session.user = user;
+          console.log(user)
           res.status(200).send(user);
         });
       } else {
@@ -253,18 +254,12 @@ const sendFriendRequest = async (req, res, next) => {
         //this is the new contact object for the current user or the one sending the request
         const newContact = {
           id: friend._id,
-          userName: friend.userName,
-          firstName: friend.firstName,
-          lastName: friend.lastName,
-          status: 'pending',
+          friendStatus: 'pending',
         };
         //this is the new contact object for the friend or the one receiving the request
         const friendNewContact = {
           id: currentUser._id,
-          userName: currentUser.userName,
-          firstName: currentUser.firstName,
-          lastName: currentUser.lastName,
-          status: 'pending',
+          friendStatus: 'pending',
         };
 
         //update the current user in the database
