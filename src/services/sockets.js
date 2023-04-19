@@ -20,8 +20,13 @@ const socketEvents = (io) => {
     //user.status = true;
     //socket.emit('status', user.status);
     console.log('a user connected');
-    /* socket.on('join', (conversationID) => {
-      const conversation = findConversationById(conversationID);
+
+    socket.join('general');
+
+    socket.emit('status', )
+
+    socket.on('joinConvo', (conversationID) => {
+      
 
       //the socket joins the room that is the conversationID
       socket.join(conversationID);
@@ -32,7 +37,18 @@ const socketEvents = (io) => {
       });
       //set the active room to the conversationID
       socket.activeRoom = conversationID;
-    }); */
+    }); 
+
+    socket.on('leaveConvo', (conversationID) => {
+      //the socket leaves the room that is the conversationID
+      socket.leave(conversationID);
+      //the socket emits a message to the room that is the conversationID
+      
+    });
+
+
+
+
 
     socket.on('sendMessage', async (message) => {
         //emit the message to the room that is the conversationID
@@ -40,19 +56,18 @@ const socketEvents = (io) => {
      const newMessage =  await addMessage(message);
       io.emit('sendMessage', newMessage);
      
-        //update the conversation with the new message in the database
-    /*   Conversation.updateOne(
-        { _id: socket.activeRoom },
-        {
-          $push: {
-            messages: message,
-          },
-        }
-      ); */
     });
 
    socket.on('typing', (data) => {
       socket.broadcast.emit('typing', data);
+    });
+
+    socket.on('stopTyping', (data) => {
+      socket.broadcast.emit('stopTyping', data);
+    });
+
+    socket.on('statusChange', (data) => {
+      socket.broadcast.emit('statusChange', data);
     });
     
 
