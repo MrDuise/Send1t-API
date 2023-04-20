@@ -14,42 +14,9 @@ const {
 
 const socketEvents = (io) => {
   io.on('connection', (socket) => {
-    //on connection, set user status to true
-    //and emit status to client
-    //so that the client can update the UI
-    //user.status = true;
-    //socket.emit('status', user.status);
     console.log('a user connected');
 
-    socket.join('general');
-
-    socket.emit('status', )
-
-    socket.on('joinConvo', (conversationID) => {
-      
-
-      //the socket joins the room that is the conversationID
-      socket.join(conversationID);
-      //the socket emits a message to the room that is the conversationID
-      socket.emit('message', {
-        user: 'admin',
-        text: `${user.name}, welcome to room ${conversation._id}.`,
-      });
-      //set the active room to the conversationID
-      socket.activeRoom = conversationID;
-    }); 
-
-    socket.on('leaveConvo', (conversationID) => {
-      //the socket leaves the room that is the conversationID
-      socket.leave(conversationID);
-      //the socket emits a message to the room that is the conversationID
-      
-    });
-
-
-
-
-
+   
     socket.on('sendMessage', async (message) => {
         //emit the message to the room that is the conversationID
       console.log("In the socket.io event", message);
