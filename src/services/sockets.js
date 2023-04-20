@@ -14,45 +14,27 @@ const {
 
 const socketEvents = (io) => {
   io.on('connection', (socket) => {
-    //on connection, set user status to true
-    //and emit status to client
-    //so that the client can update the UI
-    //user.status = true;
-    //socket.emit('status', user.status);
     console.log('a user connected');
-    /* socket.on('join', (conversationID) => {
-      const conversation = findConversationById(conversationID);
 
-      //the socket joins the room that is the conversationID
-      socket.join(conversationID);
-      //the socket emits a message to the room that is the conversationID
-      socket.emit('message', {
-        user: 'admin',
-        text: `${user.name}, welcome to room ${conversation._id}.`,
-      });
-      //set the active room to the conversationID
-      socket.activeRoom = conversationID;
-    }); */
-
+   
     socket.on('sendMessage', async (message) => {
         //emit the message to the room that is the conversationID
       console.log("In the socket.io event", message);
      const newMessage =  await addMessage(message);
       io.emit('sendMessage', newMessage);
      
-        //update the conversation with the new message in the database
-    /*   Conversation.updateOne(
-        { _id: socket.activeRoom },
-        {
-          $push: {
-            messages: message,
-          },
-        }
-      ); */
     });
 
    socket.on('typing', (data) => {
       socket.broadcast.emit('typing', data);
+    });
+
+    socket.on('stopTyping', (data) => {
+      socket.broadcast.emit('stopTyping', data);
+    });
+
+    socket.on('statusChange', (data) => {
+      socket.broadcast.emit('statusChange', data);
     });
     
 

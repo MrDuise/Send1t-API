@@ -35,7 +35,9 @@ const createContact = async (userName, contact) => {
   try {
     const user = await getUserByUsername(userName);
     if (user !== null) {
-      user.contacts.push(contact);
+      const {_id, friendStatus} = contact;
+      console.log(user)
+      user.contacts.push(_id);
       await user.save();
       return user.contacts;
     } else {
@@ -94,7 +96,7 @@ const getContactById = async (id, contactId) => {
  */
 const getUserById = async (id) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate('contacts');
     return user;
   } catch (err) {
     console.log(err);
@@ -153,6 +155,24 @@ const getUserContacts = async (id) => {
     throw error;
   }
 };
+
+const getFriendRequests = async (id) => {
+  try {
+    const user = await getUserById(id);
+    if (user) {
+      return user.contacts.filter((contact) => {
+        return contact.status === 'pending';
+      });
+
+    } else {
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 
 /*
  *-----------------------------------------
@@ -323,5 +343,6 @@ module.exports = {
   deleteContact,
   addConversation,
   getUserConversations,
-  setUserStatus
+  setUserStatus,
+  getFriendRequests
 };

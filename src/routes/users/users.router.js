@@ -14,6 +14,7 @@ const {
   acceptFriendRequestController,
   changeUserStatusController,
   searchForUserController,
+  getFriendRequestsController
 } = require('./users.controller');
 
 usersRouter.post("/login/local", localLogin);
@@ -30,6 +31,7 @@ usersRouter.post('/sendFriendRequest', sendFriendRequest);
 usersRouter.post('/acceptFriendRequest', acceptFriendRequestController);
 usersRouter.post('/changeUserStatus', changeUserStatusController);
 usersRouter.post('/searchForUser', searchForUserController);
+usersRouter.post('/getFriendRequests', getFriendRequestsController);
 
 
 module.exports = usersRouter;
