@@ -127,77 +127,51 @@ Sure! Here's the updated markdown table with sub-features based on the descripti
 <details closed>
 <summary>Account Requirements</summary>
 
-|      Sub-Feature     |    Actor    |                                       Description                                       |                                            Outcome                                           | In Scope? | Completed? |
-|:--------------------:|:-----------:|:---------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|:---------:|:----------:|
-| Edit Account         | As a user   | I would like to edit my account details (password, email, phone number)                 | so that my account becomes more personalized                                                 | yes       | yes        |
-| Edit Button          | As a user   | I would like a button that will take me to a page to edit all account   details         | so that I can change my account details                                                      | yes       | yes        |
-| Home Course/Handicap | As a user   | I would like to list my home golf course and handicap index                             | so that other users can see where I golf and my skill level                                  | yes       | yes        |
-| Account Security     | As a system | I would like to encrypt user passwords in a database                                    | so that their accounts will be secured                                                       | yes       | yes        |
-| Logout Button        | As a user   | I would like a button that will log me out of my account                                | so that my account cannot be accessed by other people                                        | yes       | yes        |
-| Account Page         | As a user   | I would like an account page                                                            | so that I can see all of my account details in one place                                     | yes       | yes        |
-| View Accounts        | As a user   | I would like to view other users' account pages                                         | so that I can see their username, home course, and handicap index                            | no        | yes        |
-| Handicap API         | As a system | I would like to hook up users' handicap index with a GHIN API                           | so that users' handicaps will be automatically updated and true                              | no        | no         |
-| Home Course API      | As a system | I would like to hook up golf course API                                                 | so that users can choose real courses as their home course                                   | no        | no         |
-| Store Account Info   | As a system | I would like to store all user account information in a database                        | so that user data is backed up and protected from data loss                                  | yes       | yes        |
-| Friends              | As a user   | I would like to send friend requests to other users                                     | so that I can become friends with them and see their posts                                   | no        | no         |
-| Profile Picture      | As a user   | I would like to have a profile picture                                                  | so that people can see what I look like                                                      | no        | no         |
-| Post Cards           | As a system | I would like each post to be formatted as a card                                        | so the page will be formatted and organized                                                  | yes       | yes        |
-| Delete Posts         | As a user   | I would like a button that deletes a post                                               | so that the person who made the post can prevent anyone else from seeing   that post anymore | yes       | yes        |
-| Remove Deleted Posts | As a system | I would like deleted posts to be removed from the database                              | so the data of that post is permanently removed from data storage                            | yes       | yes        |
-| Edit Posts           | As a user   | I would like to edit posts                                                              | so I can change what my posts contain                                                        | yes       | yes        |
-| Edit Button          | As a user   | I would like a clickable button that directs me to edit a post                          | so that I can edit a post                                                                    | yes       | yes        |
-| Edit Content         | As a user   | I would like a text box where I can edit the previous input for a post                  | so that I can change the post contents                                                       | yes       | yes        |
-| Edit Error Message   | As a system | I would an error message to display if input doesn’t fit requirements                   | so the user can know if they entered incorrect data                                          | yes       | yes        |
-| Edit Post Data       | As a system | I would like the edited post's data to be changed in the database to   reflect the edit | so the database will have accurate data                                                      | yes       | yes        |
+# Send1t Release 1 User Stories
+
+| Sub-Features | Actor | Description | Outcome | In Scope? | Completed? |
+|:------------:|:-----:|:-----------:|:-------:|:---------:|:----------:|
+| Full Name | User | Be able to see my full name on my profile | View my details | Yes | Yes |
+| Username | User | Be able to see my username on my profile | Check my information | Yes | Yes |
+| Email | User | Be able to see my email on my profile | Check my information | Yes | Yes |
+| Profile Picture | User | Be able to see my profile picture | Check my information | Yes | No |
+| Edit Button | System | Display a button to edit the user's info | Edit account details | Yes | Yes |
+| Tagline | User | Be able to set a tagline for my profile | Personalize my profile | Yes | Yes |
+| Connection Status | User | Be able to see the connection status of my contacts | Check their availability | Yes | Yes |
+
+</details>
+  
+<details closed>
+<summary>Contact Requirements</summary>
+
+|    Sub-Features   |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
+|:-----------------:|:-----------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:---------:|:----------:|
+|     Add Contact    |     User    |                                Ability to add a contact to the user's contact list                                |                     User has a list of people to talk to                     |    Yes    |    Yes     |
+|    Contact List    |    System   |                      List of contacts is connected to each user profile                                     |                      Contacts are associated with user profiles                  |    Yes    |    Yes     |
+|   View Contact(s)  |     User    |                                      Ability to view user's contacts                                     |                  User can see their list of contacts in the app                   |    Yes    |    Yes     |
+|   Delete Contact   |     User    |                                  Ability to delete a contact from the user's list                                 |              User can remove unwanted people from their list of contacts             |    Yes    |    Yes     |
+|Contact List Order  |    System   |                                 Display the list of contacts in alphabetical order                                |                 User can find people in their contact list more easily              |    Yes    |    Yes     |
+| Contact's Picture  |    System   |                            Display the contact's profile picture in each contact slot                           |                  User can see who the contact is by their profile picture            |    Yes    |     No     |
+| Connection Status  |    System   | Display the contact's connection status symbol in each contact slot so that the user knows who can talk |  User can see at a glance who is available to talk based on connection status symbol |    Yes    |    Yes     |
+|   Contact's Name   |    System   |                                 Display the contact's username in each contact slot                                |                     User can easily identify who they are talking to                 |    Yes    |    Yes     |
   
 </details>
   
 <details closed>
-<summary>Posts Requirements</summary>
-
-|      Sub-Feature      |    Actor    |                                       Description                                       |                                            Outcome                                           | In Scope? | Completed? |
-|:---------------------:|:-----------:|:---------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|:---------:|:----------:|
-| Make Post             | As a user   | I would like to make a post                                                             | so that other users can see what I have to say in the home page                              | yes       | yes        |
-| Post Button           | As a user   | I would like a clickable button that directs me to make a post                          | so that I can make a post                                                                    | yes       | yes        |
-| Post Content          | As a user   | I would like a text box where I can input my post data                                  | so I can include my post content                                                             | yes       | yes        |
-| Post Requirement      | As a system | I would like posts to consist of 1-280 characters                                       | so that I can verify the data is correctly entered                                           | yes       | yes        |
-| Post Error Message    | As a system | I would an error message to display if input doesn’t fit requirements                   | so the user can know if they entered incorrect data                                          | yes       | yes        |
-| Post Storage          | As a system | I would like to store posts in a database                                               | so that all posts are saved and can be read to the home page for viewing                     | yes       | yes        |
-| Delete Posts          | As a user   | I would like a button that deletes a post                                               | so that the person who made the post can prevent anyone else from seeing   that post anymore | yes       | yes        |
-| Remove Deleted Posts  | As a system | I would like deleted posts to be removed from the database                              | so the data of that post is permanently removed from data storage                            | yes       | yes        |
-| Edit Posts            | As a user   | I would like to edit posts                                                              | so I can change what my posts contain                                                        | yes       | yes        |
-| Edit Button           | As a user   | I would like a clickable button that directs me to edit a post                          | so that I can edit a post                                                                    | yes       | yes        |
-| Edit Content          | As a user   | I would like a text box where I can edit the previous input for a post                  | so that I can change the post contents                                                       | yes       | yes        |
-| Edit Error Message    | As a system | I would an error message to display if input doesn’t fit requirements                   | so the user can know if they entered incorrect data                                          | yes       | yes        |
-| Edit Post Data        | As a system | I would like the edited post's data to be changed in the database to   reflect the edit | so the database will have accurate data                                                      | yes       | yes        |
-| Comments              | As a user   | I would like to comment on other users' posts                                           | so I can communicate with other users                                                        | no        | no         |
-| Comment Button        | As a user   | I would like a clickable button that directs me to make a comment                       | so that I can make a comment                                                                 | no        | no         |
-| Comment Content       | As a user   | I would like a text box where I can input my comment data                               | so I can include my comment content                                                          | no        | no         |
-| Comment Requirement   | As a system | I would like comments to consist of 1-280 characters                                    | so that I can verify the data is correctly entered                                           | no        | no         |
-| Comment Error Message | As a system | I would an error message to display if input doesn’t fit requirements                   | so the user can know if they entered incorrect data                                          | no        | no         |
-| Comment Storage       | As a system | I would like to store comments in a database                                            | so that all comments are saved and can be read to the home page for   viewing                | no        | no         |
-| Liking Posts          | As a user   | I would like a button I can click to like posts                                         | so that the user whose post I like will know I liked their post                              | no        | no         |
-| Post Time             | As a user   | I would like to see when a post was posted                                              | so that I can know when the post was posted                                                  | yes       | yes        |
-| Pictures              | As a user   | I would like to post pictures                                                           | so that I can show other users my pictures                                                   | no        | no         |
-| Picture File Drop     | As a user   | I would like a file dropbox                                                             | so that I can add picture files to the post                                                  | no        | no         |
-| Picture Caption       | As a user   | I would like to add a caption to my picture posts                                       | so that I can describe the pictures                                                          | no        | no         |
-  
-</details>
-  
-<details closed>
-<summary>User Interface Requirements</summary>
-
-|   Sub-Feature  |    Actor    |                                   Description                                  |                                      Outcome                                     | In Scope? | Completed? |
-|:--------------:|:-----------:|:------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------:|:---------:|:----------:|
-| Logo           | As a system | I would like the company logo to appear in the top left corner of every   page | so the app looks more professional                                               | yes       | yes        |
-| Header         | As a system | I would like every page to have a header including nav bar, titles, and   logo | so the app is clean and usable                                                   | yes       | yes        |
-| Title          | As a system | I would like the company name to appear at the top of every page               | so the app looks more porfessional                                               | yes       | yes        |
-| Page title     | As a user   | I would like each page's title to appear at the top of the page                | so I will know where I am in the app                                             | yes       | yes        |
-| Color Scheme   | As a user   | I would like a pleasurable color scheme                                        | so I will have a better experience using the app and it will be more   organized | yes       | yes        |
-| Navigation Bar | As a user   | I would like a navigation bar                                                  | so I can easily navigate the app                                                 | yes       | yes        |
-| Menu           | As a user   | I would like a menu dropdown                                                   | so I can easily navigate the app                                                 | no        | yes        |
-| Pictures       | As a system | I would like pictures to appear in the background of pages                     | so the app is more appealing to the user                                         | no        | no         |
-| Theme          | As a system | I would like all components to have a similar theme                            | so the app will appeaar more professional and be esier for users to   understand | yes       | yes        |
+<summary>Edit Profile Requirements</summary>
+|    Sub-Features   |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
+|:-----------------:|:-----------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:---------:|:----------:|
+|    Edit Password   |     User    |                                 Change password to be more secure if the need arises                              |                                       Password is updated                                           |    Yes    |    Yes     |
+|   Update First Name  |    System   |                               Update the first name with the new user supplied first name                            |                                       First name is updated                                          |    Yes    |    Yes     |
+|   Update Last Name  |    System   |                                Update the last name with the new user supplied last name                            |                                        Last name is updated                                          |    Yes    |    Yes     |
+|     Update Email   |    System   |                                   Update the email with the user supplied email                                 |                                         Email is updated                                             |    Yes    |    Yes     |
+|    Update Password |    System   |                                 Update the password with the user supplied password                               |                                        Password is updated                                           |    Yes    |    Yes     |
+|      Save Button   |    System   |                                               Have a save button                                               |                            User can save the changes they made to their profile                           |    Yes    |    Yes     |
+|     Cancel Button  |    System   |                                              Have a cancel button                                             |                        User can cancel the changes they made to their profile without saving                      |    Yes    |    Yes     |
+|  Encrypt Password  |    System   |                                          Encrypt the updated password                                          |                                New password is not stored as plain-text                               |    Yes    |    Yes     |
+|   Send Update Email |    System   |                 Send an email when the user's information has been updated with a message saying what was changed             |                 User knows what was changed and when in case they did not change the information              |    Yes    |    Yes     |
+| Update Profile Picture |    User    |                                  Upload a new photo for my profile picture                                 |                              User's profile picture is updated                                           |    Yes    |     No     |
+|       Crop Photo   |    System   |                                          Crop the photo to correct dimensions                                      |                                       User's photo is correctly sized                                     |    Yes    |     No     |
   
 </details>
   
