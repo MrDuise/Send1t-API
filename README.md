@@ -20,23 +20,18 @@ This will get it running on your localhost, allowing access through Postman or s
 
 The postman collection used for testing can be found within the 'Extras' folder
 
-## Technologies
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/90354190/228983879-1141bae3-4045-432a-b586-2ec69f0aef2f.png">  
 
-## Logical System Architecture
-<p>This diagram shows the design of the logical solution of this project. A primary focus of this project is to design it in N-tier architecture, so each tier of the project, and the details of that layer, are displayed in this diagram. 
-To summarize, the project will consist of a client layer, presentation layer, business layer, data access layer, and a data persistence layer. Each of these layers can access ONLY the layer directly above and below itself. Within each container of this diagram are the logical operations of its respective layer.
+## Technologies and Logical System Architecture
+<p>This diagram shows the design of the logical solution of this project. A primary focus of this project is to design it in N-tier architecture, so each tier of the project, and the details of that layer, are displayed in this diagram. This diagram also serves to list the technologies used in this project and the role they played.
+To summarize, the project will consist of a client layer, presentation layer, business layer, and a data access layer. The problem with Javascript based projects is that data access is not enforced in any way, requiring the developer to key the data access layers in mind. The only time the general rule of n-layer was semi broken is in the web-socket connection, in which this layer directly talks to the database throught the data access layer.
 
 <img width="600" alt="image" src="readme docs/Technology diagram v2.png">
 
-## Physical System Architecture
-<p>This diagram portrays the physical design of this application. This application will be hosted in AWS and uses the services EC2, Elastic Beanstalk, and RDS. Elastic Beanstalk will automatically create EC2 instances to scale out for the demand necessary for the application. The application will be run within each EC2 instance that Elastic Beanstalk creates. Elastic Beanstalk also connects with a MySQL database in RDS for all data transfers that happen within the app.<br>
-  
-<img width="600" alt="image" src="https://user-images.githubusercontent.com/90354190/232922873-1c9c7af9-6559-4348-8528-79cf7573fb3a.png">
+
 
 ## Detailed Technical Design
 ### General Technical Approach
-<p>Mulligan is a Spring Boot web application developed in the Spring framework using N-layer and Model, View, Controller architecture. The back-end portion of the application will be written with the Java programming language, whereas the front-end of Mulligan will be designed with Adobe XD and implemented using Thymeleaf, HTML, and CSS. The application’s data will persist in a MySQL database. All code will be managed in a GitHub repository so that code changes can be easily documented and tracked throughout the project’s timeline. All project documentation, user stories, and tasks will be managed using project management tools such as Jira, Confluence, and Microsoft Office (Excel/Word).
+<p>Send1t is a MERN(Mongo, Express, React Native, Node) Stack application developed using N-layer and Model, View, Controller architecture. The back-end portion of the application was written with the JavaScript programming language, whereas the front-end of Send1t was be designed designed using simple tools such as draw.io and written using React Native. The application’s data will persist in a MongoDB database. All code will be managed in a GitHub repository so that code changes can be easily documented and tracked throughout the project’s timeline. 
 
 ### Key Technical Design Decisions
 <p>This application will be created in using the Spring framework. It will be designed in N-layer architecture and use a Model, View, Controller structure. This design structure was chosen because the app is mainly a create, read, update, delete (CRUD) application so the N-layer/MVC structure is an optimal solution. 
@@ -44,25 +39,16 @@ To summarize, the project will consist of a client layer, presentation layer, bu
 <p>Along with N-layer architecture, this application will also utilize Model, View, Controller (MVC) architecture. The models will be the container for all logic that relates to the application’s data. In this case, the user and post models. The controllers are responsible for handling all user requests and business logic of the application. This would include processing logins, registers, and making posts. Lastly, views will oversee all UI logic, including page navigation, text boxes, and buttons across the application.
 
 ## Database Design
-The MySQL database, titled MulliganDB, will consist of two tables. Each table corresponds to its associated model in the application. For this instance, the user table corresponds with the User Model and the post table corresponds with the Post Model. Each table contains the variables from the models (including data size/type requirements) so all data from the models can persist in the database. The two tables are associated via foreign key that references the userId number associated with the user that created each post.
+The MongoDB database will be hosted through MongoDB Atlas. This removes a complex process of transfering all the data from a local system to cloud storage. The database will be split into 3 collections, the Users, Conversations, and Messages. Each collection has a conspending schema in the APIs code that enforces a standard layout as document databases don't enforce this. The users schema contains two lists of forgien keys. One is in the array of conversations, which is used to fetch all conversations that a user is a part of. The other is related to the contacts list. This is a reference to other user documents, so that anytime they update their information, it is also set to other users. The Messages colleciton is the only other place where foregin keys are used. This key is the conversationID, and is used to link the message to a single conversation. 
+
+
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/90354190/216126233-26f997ca-4546-490f-989e-baee36d66c0b.png">
 
 ## DevOps 
-### AWS Cloud
+### Render Webhosting
 ## [mulliganapp-env.eba-m7fztdmk.us-east-1.elasticbeanstalk.com/](http://mulliganapp-env.eba-m7fztdmk.us-east-1.elasticbeanstalk.com/)
 <p>Mulligan is hosted in the AWS cloud using Elastic Beanstalk. Using Elastic Beanstalk makes managing the deliveries and updates to this application much easier as AWS will handle all the details for load balancing, capacity provisioning, scaling and health monitoring of this application. The MySQL database is set up through AWS RDS so that data created, read, updated, or deleted within the application is reflected and persists within the hosted database. 
   
-### Build Pipeline
-<p>Mulligan is also managed through AWS CodePipeline, AWS's service for build pipelines. This service is directly integrated with the GitHub repository and automates the deployement process whenever changes are made to the branch set up to be deployed. This tool enables this application to feature continuous integration and continuous delivery (CI/CD) making the updates to the infrastructure of this application very reliable and fast. Each time a change is made to the branch integrated with CodePipeline, the service will automatically build, test, and redeploy the application on AWS Elastic Beanstalk, allowing AWS to do virtually all of the work for me.
-   
-### Logging
-<p>Logging exists at each controller class within the Mulligan application. For each method within the controllers, logs will be taken at at the entrance and exit of each methods. The log will contain the URL associated with that method, including any parameters inside that URL so that the logs will show exacatly what is going on when the application is in use. By doing this, it makes it much easier to understand how the flow of the application works and where a potential issue may have risen.
-  
-### SLF4J & Log4j
-<p>Logging was implemented using Simple Logging Facade for Java (SLF4J). Using this logging API gives the application the ability to also use the logging framework Log4j. SLF4J serves as the abstraction layer for the logging in the application, while Log4j does that actual logging. 
-
-### Monitoring Uptime
-<p>Monitoring the uptime of this application is key to mananging the production environment. For this, Mulligan uses Uptime Robot to continuously monitor whether this application is currently up or down. Uptime Robot is configured to scan the index page of the application hosted on AWS every 5 minutes to test the application status. If Uptime Robot detects that the application is down, I will immediately recieve an email telling me the application is down. This monitorign will help me in any situation where the application might unexpectedly go down and gives me the opportunity to correct the problem in a timely manner.  
   
 ## Functional Requirements
 <details closed>
