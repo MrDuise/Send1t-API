@@ -99,17 +99,28 @@ Logging exists at each HTTPs route within the API. This is handled by the loggin
 </details>
   
 <details closed>
-<summary>Home Requirements</summary>
+<summary>Sending Messages Requirements</summary>
 
-|  Sub-Feature  |    Actor    |                                Description                               |                             Outcome                            | In Scope? | Completed? |
-|:-------------:|:-----------:|:------------------------------------------------------------------------:|:--------------------------------------------------------------:|:---------:|:----------:|
-| Home Page     | As a user   | I would like a home page                                                 | so I can view posts and other content                          | yes       | yes        |
-| Search Users  | As a user   | I would like to search for other users                                   | so that I can see their accounts and send them friend requests | yes       | yes        |
-| Search Posts  | As a user   | I would like to search the app for posts                                 | so that I can see all posts that contain what I search         | yes       | yes        |
-| Search Bar    | As a user   | I would like a search bar                                                | so that I can search for user accounts and posts               | yes       | yes        |
-| Search Button | As a user   | I would like a clickable button                                          | so that I can execute a search                                 | yes       | yes        |
-| Usernames     | As a user   | I would like each post to show the username of the person that posted it | so I can know who posted each post                             | yes       | yes        |
-| Post Cards    | As a system | I would like each post to be formatted as a card                         | so the page will be formatted and organized                    | yes       | yes        |
+Sure! Here's the updated markdown table with sub-features based on the description:
+
+|     Sub-Features      |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
+|:---------------------|:-----------|:----------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------|:---------:|:----------:|
+| Sending Messages      | User       | Send messages in text format to one person                                                          | Have a conversation                                                                               |    Yes    |    Yes     |
+| Sending Messages      | User       | Send messages in text format to more than one person                                                | Have a group conversation                                                                         |    Yes    |    Yes     |
+| Saving Messages       | System     | Save user messages                                                                                  | Conversations can be continued at a later time                                                     |    Yes    |    Yes     |
+| Linking Messages      | System     | Link saved messages to each conversation                                                            | Users can have more than one conversation at a time                                               |    Yes    |    Yes     |
+| Group Message Limit   | System     | Limit group messages to 5 people max                                                               | Prevent system overload                                                                           |    Yes    |    Yes     |
+| Starting Conversation | User       | Have an icon to start a new conversation                                                            | Start a conversation with another user                                                             |    Yes    |    Yes     |
+| Starting Conversation | User       | See a list of contacts when starting a new conversation                                              | Choose who to talk to                                                                             |    Yes    |    Yes     |
+| Conversation List     | System     | Display a list of the user's recent conversations from most recent to least recent                   | Allow users to view the most up-to-date conversations first                                       |    Yes    |    Yes     |
+| View Chat Log         | System     | Display all past messages from a conversation when the user clicks on it                            | Allow users to view past messages from a specific conversation                                     |    Yes    |    Yes     |
+| Conversation Size     | System     | Define conversations as messages between 2 to 5 people                                              | Set expectations for what constitutes a conversation                                              |    Yes    |    Yes     |
+| Chat Log Definition   | System     | Define chat logs as the list of messages displayed in order from least recent to most recent        | Set expectations for how messages are displayed within a conversation                              |    Yes    |    Yes     |
+| Delete Conversation   | User       | Have the ability to delete a conversation                                                           | Allow users to remove conversations they no longer wish to keep                                    |    Yes    |    Yes     |
+| Delete Conversation   | System     | Delete a conversation when the user selects it                                                      | Remove the conversation from the user's account                                                    |    Yes    |    Yes     |
+| Unlink Conversation   | System     | Unlink a conversation from the account of only the user that selected it to be deleted             | Allow other users to keep the messages from the conversation if they wish to                        |    Yes    |    Yes     |
+| Fully Delete          | System     | Fully delete a conversation only when all users have been removed from it                           | Ensure that the conversation is completely removed only when all users no longer have access to it |    Yes    |    no     |
+| Notification          |
   
 </details>
   
