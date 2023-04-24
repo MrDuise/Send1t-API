@@ -46,60 +46,55 @@ The MongoDB database will be hosted through MongoDB Atlas. This removes a comple
 
 ## DevOps 
 ### Render Webhosting
-## [mulliganapp-env.eba-m7fztdmk.us-east-1.elasticbeanstalk.com/](http://mulliganapp-env.eba-m7fztdmk.us-east-1.elasticbeanstalk.com/)
-<p>Mulligan is hosted in the AWS cloud using Elastic Beanstalk. Using Elastic Beanstalk makes managing the deliveries and updates to this application much easier as AWS will handle all the details for load balancing, capacity provisioning, scaling and health monitoring of this application. The MySQL database is set up through AWS RDS so that data created, read, updated, or deleted within the application is reflected and persists within the hosted database. 
+## [https://send1t-api.onrender.com](https://send1t-api.onrender.com)
+<p>The Send1t API is the only part of the application that is hosted. It is hosted using Render Web Service. This made delivering updates to my API much easier, as its connected to my Github repos main branch, so any major update is automaticlly built on Render. The MongoDB database is set up through MongoDB Atlas, which is hosted by AWS. This is auto scaled and I don't need to touch it, I just need my access token. 
+  
+## Logging
+Logging exists at each HTTPs route within the API. This is handled by the logging fraemwork Morgan, which automatically records the route that the requst hit and the response code that was sent back, the time of the request, and how long the response took. This is sent to Renders internal hosting logs, from which I can download them if I so wish. 
   
   
 ## Functional Requirements
 <details closed>
 <summary>Login Requirements</summary>
 
-|    Sub-Features   |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
-|:-----------------:|:-----------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:---------:|:----------:|
-| Login Form        | As a user   | I would like to login into my account                                                                | so that I can gain access to my account and the app                                             | yes       | yes        |
-| Username Input    | As a user   | I would like a text box to enter my username                                                         | so I can submit the form with the correct data                                                  | yes       | yes        |
-| Username Error    | As a system | I would like to display an error message if the username doesn't fit the   requirements              | so that the user will know they entered invalid data                                            | yes       | yes        |
-| Password Input    | As a user   | I would like a text box to enter my password                                                         | so that I can submit the form with the correct data                                             | yes       | yes        |
-| Password Error    | As a system | I would like to display an error message if the password is incorrect                                | so that the user will know they entered invalid data or data not   associated with that account | yes       | yes        |
-| Submit            | As a user   | I would like a clickable button                                                                      | so that I can submit the form with the correct data                                             | yes       | yes        |
-| Registration Link | As a user   | I would like a clickable button to redirect me to the registration page   if I don't have an account | so that I can create an account and sign in                                                     | yes       | yes        |
-| Forgot Password   | As a user   | I would like a clickable button that I can click to recover my account                               | so that I can log back in to my account when I forget my password                               | no        | no         |
-| Sessions          | As a system | I would like a session to start once a user is logged in                                             | so that they have access to the correct pages of the app                                        | yes       | yes        |
-| Remember Me       | As a user   | I would like a remember me check box on the login page                                               | so that I will not have to login everytime I use the app                                        | no        | yes        |
-| Remember Me       | As a system | I would like to remmeber a user's session if they check the remember me   checkbox                   | so that they will not have to login everytime they use the app                                  | no        | yes        |
-  
+
+|      Sub-Features      |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
+|:----------------------:|:-----------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:---------:|:----------:|
+|   User Authentication   |    User     |                                   I would like to input my username                                  |                      so that I can access web site                      |    Yes    |    Yes     |
+|   User Authentication   |    User     |                                   I would like to input my password                                  |                      so that I can access web site                      |    Yes    |    Yes     |
+|   User Authentication   |   System    |            I would like to display an error if username is incorrect                                |               so that web site is not accessible              |    Yes    |    Yes     |
+|   User Authentication   |   System    |            I would like to display an error if password  is incorrect                               |               so that web site is not accessible              |    Yes    |    Yes     |
+|   User Authentication   |   System    |      I would like to display a system error if credential store is not found                       |      so that support can debug a system issue      |    Yes    |    Yes     |
+|   User Authentication   |   System    |                           I would like to verify the username                                       |               so that only authorized users can have access               |    Yes    |    Yes     |
+|   User Authentication   |   System    |                           I would like to verify the password                                       |               so that only authorized users can have access               |    Yes    |    Yes     |
+| Social Media Integration|    User     |                       I would like to login in with Facebook                                       |       so that I can sign in without making a brand new account        |    No    |    No     |
+| Social Media Integration|    user     |                        I would like to login in with Twitter                                       |       so that I can sign in without making a brand new account        |    No    |    No     |
+| Social Media Integration|    user     |                        I would like to login with Google                                        |       so that I can sign in without making a brand new account        |    No    |    No     |
 </details>
   
 <details closed>
 <summary>Register Requirements</summary>
 
-|        Sub-Feature       |    Actor    |                                                Description                                               |                          Outcome                         | In Scope? | Completed? |
-|:------------------------:|:-----------:|:--------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------:|:---------:|:----------:|
-| Register Form            | As a user   | I would like to register into my account                                                                 | so that I can have an account for the app                | yes       | yes        |
-| Username Input           | As a user   | I would like a text box to enter my username                                                             | so I can submit the form with the correct data           | yes       | yes        |
-| Username Data Req.       | As a system | I would like to require the username is only letters and numbers and is   between 2-36 characters        | so the entered data is in the correct format             | yes       | yes        |
-| Username Error Message   | As a system | I would like to display an error message if the username doesn't fit the   requirements                  | so that the user will know they entered invalid data     | yes       | yes        |
-| Password Input           | As a user   | I would like a text box to enter my password                                                             | so that I can submit the form with the correct data      | yes       | yes        |
-| Password Data Req.       | As a system | I would like to require the password to be between 2-254 characters                                      | so the entered data is in the correct format             | yes       | yes        |
-| Password Error           | As a system | I would like to display an error message if the password does not fit the   requirements                 | so that the user will know they entered invalid data     | yes       | yes        |
-| GHIN input               | As a user   | I would like a text box to enter my GHIN number                                                          | so my GHIN account can be connected to my profile        | no        | no         |
-| GHIN data Req.           | As a system | I would like to require the GHIN number to be in the correct GHIN number   format                        | so the entered data is in the correct format             | no        | no         |
-| GHIN optional            | As a system | I would like the GHIN number input to be optional for the user                                           | so the user is not required to use GHIN                  | no        | no         |
-| GHIN Error               | As a system | I would like an error message to be displayed if the input does not fit   the GHIN format                | so the user will know they entered invalid data          | no        | no         |
-| Submit                   | As a user   | I would like a clickable button                                                                          | so that I can submit the register form                   | yes       | yes        |
-| Login Link               | As a user   | I would like a clickable button to redierct me to the login page if I   already have an account          | so that I can log in to my account                       | yes       | yes        |
-| Home Course input        | As a user   | I would like a text box to enter my home golf course                                                     | so my my home course will be shown on my account page    | yes       | yes        |
-| Home Course data Req.    | As a system | I would like to require the home course inout to be between 2-254   characters                           | so the entered data is in the correct format             | yes       | yes        |
-| Home Course Error        | As a system | I would like an error message to be displayed if the input does not fit   the home course requirement    | so the user will know they entered invalid data          | yes       | yes        |
-| Name input               | As a user   | I would like a text box to enter my full name                                                            | so my my name will be shown on my account page           | yes       | yes        |
-| Name data Req.           | As a system | I would like to require the name inout to be between 2-72 characters                                     | so the entered data is in the correct format             | yes       | yes        |
-| Name Error               | As a system | I would like an error message to be displayed if the input does not fit   the name requirement           | so the user will know they entered invalid data          | yes       | yes        |
-| Email input              | As a user   | I would like a text box to enter my email                                                                | so my my email will be shown on my account page          | yes       | yes        |
-| Email data Req.          | As a system | I would like to require the name inout to be a valid email address                                       | so the entered data is in the correct format             | yes       | yes        |
-| Email Error              | As a system | I would like an error message to be displayed if the input does not fit   the email requirement          | so the user will know they entered invalid data          | yes       | yes        |
-| Handicap Index input     | As a user   | I would like a text box to enter my handicap index                                                       | so my my handicap index will be shown on my account page | yes       | yes        |
-| Handicap Index data Req. | As a system | I would like to require the name inout to be a double                                                    | so the entered data is in the correct format             | yes       | yes        |
-| Handicap Index Error     | As a system | I would like an error message to be displayed if the input   does not fit the handicap index requirement | so the user will know they entered invalid data          | yes       | yes        |
+|     Sub-Features     |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
+|:--------------------:|:-----------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:---------:|:----------:|
+|      Registration    |    User     |                    I would like to register on web site before login                     |                               So that I have an account                               |    Yes    |    Yes     |
+|                      |    User     |                                I would like to enter a username                                |                              So that I can make an account                              |    Yes    |    Yes     |
+|                      |    User     |                                  I would like to enter a password                                 |                              So that I can make an account                              |    Yes    |    Yes     |
+|                      |    User     |                                  I would like to enter a first name                                |                              So that I can make an account                              |    Yes    |    Yes     |
+|                      |    User     |                                   I would like to enter a last name                                |                              So that I can make an account                              |    Yes    |    Yes     |
+|                      |    User     |                                      I would like to enter an email                                  |                              So that I can make an account                              |    Yes    |    Yes     |
+| Password Requirements |   System    |                              Verify that password has one number                              |                       So that the password meets the minimum security requirements                      |    Yes    |    Yes     |
+|                      |   System    |                           Verify that password has 1 lower case character                          |                       So that the password meets the minimum security requirements                      |    Yes    |    Yes     |
+|                      |   System    |                           Verify that password has 1 upper case character                          |                       So that the password meets the minimum security requirements                      |    Yes    |    Yes     |
+|                      |   System    |                           Verify that password has min of 8 characters                           |                       So that the password meets the minimum security requirements                      |    Yes    |    Yes     |
+|                      |   System    |                           Verify that password has max of 32 characters                          |                       So that the password meets the minimum security requirements                      |    Yes    |    Yes     |
+|  Email Verification   |   System    | Verify that email has not been used and display an error if it has been taken |                           So that no duplicate accounts are made                          |    Yes    |    Yes     |
+|      User Access      |   System    |                   Verify that password is linked to the username entered                   |               So only the correct password can gain access to that account              |    Yes    |    Yes     |
+|                      |   System    |                                         Encrypt the password                                        |                            So that the password is not stored as plain text                           |    Yes    |    Yes     |
+|    Profile Picture    |    User     |                       Register a profile picture, limited in size to 200*200 pixels                       |                                               N/A                                               |    Yes    |    no     |
+|  Minimum Requirements |   System    |     Display the minimum requirements of the username as an error if the one entered does not match     | So the user knows the entered data will not work and what they should try instead |    Yes    |    Yes     |
+|                      |   System    |     Display the minimum requirements of the password as an error if the one entered does not match     | So the user knows the entered data will not work and what they should try instead |    Yes    |    Yes     |
+| Unique Username Check |   System    | Verify that the entered username has not been used and display an error if it has been taken |                       So that every username is unique |    Yes    |    Yes     |
   
 </details>
   
