@@ -56,9 +56,22 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
     contacts: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
+      type: [{
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'user'
+        },
+        friendStatus: {
+          type: String,
+          required: false,
+          unique: false,
+          trim: false,
+          minlength: 0,
+          default: ''
+        }
+      }],
       required: true,
-      default: [],
+      default: []
     },
 
     blockedUsers: {
@@ -81,14 +94,6 @@ const userSchema = new mongoose.Schema(
       trim: false,
       minlength: 0,
       default: false,
-    },
-    friendStatus: {
-      type: String,
-      required: false,
-      unique: false,
-      trim: false,
-      minlength: 0,
-      default: '',
     }
   },
   {

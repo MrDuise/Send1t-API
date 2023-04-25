@@ -35,9 +35,9 @@ const createContact = async (userName, contact) => {
   try {
     const user = await getUserByUsername(userName);
     if (user !== null) {
-      const {_id, friendStatus} = contact;
+      
       console.log(user)
-      user.contacts.push(_id);
+      user.contacts.push({_id: contact._id, friendStatus: contact.friendStatus});
       await user.save();
       return user.contacts;
     } else {

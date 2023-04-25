@@ -1,0 +1,310 @@
+{
+	"info": {
+		"_postman_id": "a2293aa0-bfe9-4439-9a51-e08c3b4e5268",
+		"name": "Send1t",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18994947",
+		"_collection_link": "https://speeding-crescent-159772.postman.co/workspace/2ff41046-33f5-4e8f-9927-6e6d86e4b4df/collection/18994947-a2293aa0-bfe9-4439-9a51-e08c3b4e5268?action=share&creator=18994947&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Heather\",\r\n    \"lastName\": \"Thomason\",\r\n    \"userName\": \"h_marie\",\r\n    \"password\": \"fuckgolf\",\r\n    \"email\": \"h_thomason@gmail.com\"\r\n    \r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/users/register"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Contacts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/v1/users/contacts"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/users/getUserById/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"getUserById",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "639ff0991c0aeb1c0b10e444"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Bob\",\r\n    \"lastName\": \"Duisenberg\",\r\n    \"userName\": \"BobDylan\",\r\n    \"password\": \"choochoo1\",\r\n    \"email\": \"c@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/v1/users/updateUser/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"updateUser",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "639ff0991c0aeb1c0b10e444"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/v1/users/deleteUser/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"deleteUser",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "638ba9b252067754e2aa7a39"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Friend Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"friendUserName\": \"BigDaddy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/users/sendFriendRequest"
+			},
+			"response": []
+		},
+		{
+			"name": "Accept Friend Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"friendUserName\": \"BigDaddy\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/users/acceptFriendRequest"
+			},
+			"response": []
+		},
+		{
+			"name": "Local Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"MrDuise\",\r\n    \"password\": \"michaelsmom1\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://send1t-api.onrender.com/v1/users/login/local"
+			},
+			"response": []
+		},
+		{
+			"name": "Decline Friend Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:8000/v1/users/declineFriendRequest"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://send1t-api.onrender.com/v1/users/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "New Conversation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"participants\": [\"BigDaddy\"],\r\n    \"isGroup\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/conversations/createConversation"
+			},
+			"response": []
+		},
+		{
+			"name": "Send Message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\": \"test\",\r\n    \"message\": \"Hello this is a test message\",\r\n    \"conversationId\": \"63e69515dc38c1646e7e38ec\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/conversations/sendMessage"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users Conversations",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"MrDuise\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://send1t-api.onrender.com/v1/conversations/getUserConversations"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Message Log",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"conversationId\": \"63e69364ffb500a8f347355c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/conversations/getMessageLog"
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/v1/users/changeUserStatus"
+			},
+			"response": []
+		},
+		{
+			"name": "Search for a user",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Users friend Requests",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:8000/v1/users/getFriendRequests"
+			},
+			"response": []
+		}
+	]
+}
