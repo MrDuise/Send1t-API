@@ -42,7 +42,7 @@ To summarize, the project will consist of a client layer, presentation layer, bu
 The MongoDB database will be hosted through MongoDB Atlas. This removes a complex process of transfering all the data from a local system to cloud storage. The database will be split into 3 collections, the Users, Conversations, and Messages. Each collection has a conspending schema in the APIs code that enforces a standard layout as document databases don't enforce this. The users schema contains two lists of forgien keys. One is in the array of conversations, which is used to fetch all conversations that a user is a part of. The other is related to the contacts list. This is a reference to other user documents, so that anytime they update their information, it is also set to other users. The Messages colleciton is the only other place where foregin keys are used. This key is the conversationID, and is used to link the message to a single conversation. 
 
 
-<img width="500" alt="image" src="https://user-images.githubusercontent.com/90354190/216126233-26f997ca-4546-490f-989e-baee36d66c0b.png">
+<img width="500" alt="image" src="readme docs/database schema.png">
 
 ## DevOps 
 ### Render Webhosting
@@ -159,6 +159,7 @@ Sure! Here's the updated markdown table with sub-features based on the descripti
   
 <details closed>
 <summary>Edit Profile Requirements</summary>
+  
 |    Sub-Features   |    Actor    |                                              Description                                             |                                             Outcome                                             | In Scope? | Completed? |
 |:-----------------:|:-----------:|:----------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|:---------:|:----------:|
 |    Edit Password   |     User    |                                 Change password to be more secure if the need arises                              |                                       Password is updated                                           |    Yes    |    Yes     |
@@ -170,30 +171,11 @@ Sure! Here's the updated markdown table with sub-features based on the descripti
 |     Cancel Button  |    System   |                                              Have a cancel button                                             |                        User can cancel the changes they made to their profile without saving                      |    Yes    |    Yes     |
 |  Encrypt Password  |    System   |                                          Encrypt the updated password                                          |                                New password is not stored as plain-text                               |    Yes    |    Yes     |
 |   Send Update Email |    System   |                 Send an email when the user's information has been updated with a message saying what was changed             |                 User knows what was changed and when in case they did not change the information              |    Yes    |    Yes     |
-| Update Profile Picture |    User    |                                  Upload a new photo for my profile picture                                 |                              User's profile picture is updated                                           |    Yes    |     No     |
-|       Crop Photo   |    System   |                                          Crop the photo to correct dimensions                                      |                                       User's photo is correctly sized                                     |    Yes    |     No     |
+| Update Profile Picture |    User    |                                  Upload a new photo for my profile picture                                 |                              User's profile picture is updated                                           |    Yes    |    No      |
+|       Crop Photo    |    System   |                                          Crop the photo to correct dimensions                                      |                                       User's photo is correctly sized                                     |    Yes    |    No      |
   
 </details>
-  
-<details closed>
-<summary>Cloud Requirements</summary>
 
-|   Sub-Feature   |    Actor    |                        Description                        |                         Outcome                        | In Scope? | Completed? |
-|:---------------:|:-----------:|:---------------------------------------------------------:|:------------------------------------------------------:|:---------:|:----------:|
-| Deploy to Cloud | As a system | I would like this application to be deployed to the cloud | so that the application is more scalable and secure    | no        | yes        |
-| Build Pipeline  | As a system | I would like this application to have abuild pipeline     | So the app will be continuosly integrated to the cloud | no        | yes        |
   
-</details>
-  
-## Non-Functional Requirement
-The non-functional requirement (NFR) of Mulligan is data integrity. This means that Mulligan will ensure that 100% of the data will be accurate, secure, persistent across the entire system. Data being displayed in the web application will be the same as the data in the database in all cases and situations. Along with being accurate, password data will need to be encrypted so that account data and accessibility is secure. 
-#### Database/Model Class Design and Relationship
-The system will need to be designed in a specific way to accurately store data to ensure it is persistent. This system is using a MySQL relational database, so it is important the tables in that database are directly modeled after the User Model and Post Model classes in the application. This will ensure that the variables used in the application models are related to identical columns in each table. Those columns will be named the exact same as the model variables, so it will be very easy to understand how data will be accessed and manipulated across the system.
-#### Data Validation
-Spring data validation will be used in this application wherever users are required to input data. This will ensure that entered data will fit the database variable requirements (Reference ER Diagrams section). For example, the User Model has a variable set for username. This variable, in the database and application, has the requirements of being of type String and between the lengths of 2-36 characters. This means that the application will not allow the user to enter in any data that does not fit these requirements. What this will do for data integrity, is that it will ensure all data matches the same constraints and forces the user to abide by those constraints. This will guarantee that data is accurate, secure, and persistently existing in the database in the correct format.
-#### N-Layer Architecture
-By designing this application in N-layer architecture, each layer of the application will be separated and can only access the layer directly above and below itself (Reference Logical System Diagram). This will ensure that data cannot be accessed and manipulated directly from any layer other than the data access layer. For example, we would not want the database to be directly accessible from the client layer because it would pose a security risk and it also raises the potential that the data integrity is affected. All data manipulation and access will occur in the data access layer, which will be designed to abide by the constraints of the model classes and database table structures.
-#### Data Encryption
-User account passwords will be used for a user to login to their account. Without their password, they will not be able to access their account. In turn, if someone else knows their password, they can access their account which is a security risk in the system. To help prevent this from happening, password data will be encrypted in the database. This will require the system to handle encryption and decryption of the password data as it is used throughout the system to authenticate a user for their account.
 
 
