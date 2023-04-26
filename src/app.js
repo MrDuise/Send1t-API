@@ -75,7 +75,7 @@ passport.use(
             return done(null, false, { message: 'Incorrect Data' });
           }
       });
-      }).populate({path: 'contacts', select: 'userName firstName lastName tagline profilePicture friendStatus status'});
+      }).populate({path: 'contacts._id', select: 'userName firstName lastName tagline profilePicture friendStatus status'});
     }
   )
 );

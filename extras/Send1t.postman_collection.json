@@ -5,6 +5,7 @@
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18994947",
 		"_collection_link": "https://speeding-crescent-159772.postman.co/workspace/Personal-Projects~2ff41046-33f5-4e8f-9927-6e6d86e4b4df/collection/18994947-a2293aa0-bfe9-4439-9a51-e08c3b4e5268?action=share&creator=18994947&source=collection_link"
+
 	},
 	"item": [
 		{
@@ -21,6 +22,7 @@
 						}
 					}
 				},
+
 				"url": {
 					"raw": "http://localhost:8000/v1/users/register",
 					"protocol": "http",
@@ -34,6 +36,7 @@
 						"register"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -55,6 +58,7 @@
 						"contacts"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -165,6 +169,7 @@
 						}
 					}
 				},
+
 				"url": {
 					"raw": "http://localhost:8000/v1/users/sendFriendRequest",
 					"protocol": "http",
@@ -195,6 +200,7 @@
 						}
 					}
 				},
+
 				"url": {
 					"raw": "http://localhost:8000/v1/users/acceptFriendRequest",
 					"protocol": "http",
@@ -208,6 +214,7 @@
 						"acceptFriendRequest"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -225,6 +232,7 @@
 						}
 					}
 				},
+
 				"url": {
 					"raw": "https://send1t-api.onrender.com/v1/users/login/local",
 					"protocol": "https",
@@ -240,6 +248,7 @@
 						"local"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -261,6 +270,7 @@
 						"declineFriendRequest"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -283,6 +293,7 @@
 						"logout"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -343,6 +354,7 @@
 						"sendMessage"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -404,6 +416,7 @@
 						"getMessageLog"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -434,6 +447,7 @@
 						"changeUserStatus"
 					]
 				}
+
 			},
 			"response": []
 		},
@@ -463,6 +477,7 @@
 						"getFriendRequests"
 					]
 				}
+
 			},
 			"response": []
 		}
