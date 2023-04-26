@@ -253,12 +253,12 @@ const sendFriendRequest = async (req, res, next) => {
 
         //this is the new contact object for the current user or the one sending the request
         const newContact = {
-          id: friend._id,
+          _id: friend._id,
           friendStatus: 'pending',
         };
         //this is the new contact object for the friend or the one receiving the request
         const friendNewContact = {
-          id: currentUser._id,
+          _id: currentUser._id,
           friendStatus: 'pending',
         };
 

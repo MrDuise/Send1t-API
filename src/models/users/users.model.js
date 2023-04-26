@@ -36,8 +36,9 @@ const createContact = async (userName, contact) => {
     const user = await getUserByUsername(userName);
     if (user !== null) {
       
-      console.log(user)
-      user.contacts.push({_id: contact._id, friendStatus: contact.friendStatus});
+      //console.log(user)
+      console.log(contact)
+      user.contacts.push(contact);
       await user.save();
       return user.contacts;
     } else {
@@ -160,10 +161,17 @@ const getFriendRequests = async (id) => {
   try {
     const user = await getUserById(id);
     if (user) {
-      return user.contacts.filter((contact) => {
-        return contact.status === 'pending';
+      const requests = user.contacts.filter((contact) => {
+        return contact.friendStatus === 'pending';
       });
-
+      const userIds = requests.map((request) => {
+        return request._id;
+      });
+      const users = await User.find(
+        { _id: { $in: userIds } },
+        'userName firstName lastName tagline profilePicture friendStatus status'
+      );
+      return users;
     } else {
       throw new Error('User not found');
     }
