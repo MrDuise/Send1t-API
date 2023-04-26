@@ -2,9 +2,10 @@
 	"info": {
 		"_postman_id": "a2293aa0-bfe9-4439-9a51-e08c3b4e5268",
 		"name": "Send1t",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18994947",
-		"_collection_link": "https://speeding-crescent-159772.postman.co/workspace/2ff41046-33f5-4e8f-9927-6e6d86e4b4df/collection/18994947-a2293aa0-bfe9-4439-9a51-e08c3b4e5268?action=share&creator=18994947&source=collection_link"
+		"_collection_link": "https://speeding-crescent-159772.postman.co/workspace/Personal-Projects~2ff41046-33f5-4e8f-9927-6e6d86e4b4df/collection/18994947-a2293aa0-bfe9-4439-9a51-e08c3b4e5268?action=share&creator=18994947&source=collection_link"
+
 	},
 	"item": [
 		{
@@ -21,7 +22,21 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/users/register"
+
+				"url": {
+					"raw": "http://localhost:8000/v1/users/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"register"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -30,7 +45,20 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8000/v1/users/contacts"
+				"url": {
+					"raw": "http://localhost:8000/v1/users/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"contacts"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -141,7 +169,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/users/sendFriendRequest"
+
+				"url": {
+					"raw": "http://localhost:8000/v1/users/sendFriendRequest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"sendFriendRequest"
+					]
+				}
 			},
 			"response": []
 		},
@@ -159,7 +200,21 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/users/acceptFriendRequest"
+
+				"url": {
+					"raw": "http://localhost:8000/v1/users/acceptFriendRequest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"acceptFriendRequest"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -177,7 +232,23 @@
 						}
 					}
 				},
-				"url": "https://send1t-api.onrender.com/v1/users/login/local"
+
+				"url": {
+					"raw": "https://send1t-api.onrender.com/v1/users/login/local",
+					"protocol": "https",
+					"host": [
+						"send1t-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"v1",
+						"users",
+						"login",
+						"local"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -186,7 +257,20 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "http://localhost:8000/v1/users/declineFriendRequest"
+				"url": {
+					"raw": "http://localhost:8000/v1/users/declineFriendRequest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"declineFriendRequest"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -195,7 +279,21 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "https://send1t-api.onrender.com/v1/users/logout"
+				"url": {
+					"raw": "https://send1t-api.onrender.com/v1/users/logout",
+					"protocol": "https",
+					"host": [
+						"send1t-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"v1",
+						"users",
+						"logout"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -213,7 +311,19 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/conversations/createConversation"
+				"url": {
+					"raw": "http://localhost:8000/v1/conversations/createConversation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"conversations",
+						"createConversation"
+					]
+				}
 			},
 			"response": []
 		},
@@ -231,7 +341,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/conversations/sendMessage"
+				"url": {
+					"raw": "http://localhost:8000/v1/conversations/sendMessage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"conversations",
+						"sendMessage"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -249,7 +372,20 @@
 						}
 					}
 				},
-				"url": "https://send1t-api.onrender.com/v1/conversations/getUserConversations"
+				"url": {
+					"raw": "https://send1t-api.onrender.com/v1/conversations/getUserConversations",
+					"protocol": "https",
+					"host": [
+						"send1t-api",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"v1",
+						"conversations",
+						"getUserConversations"
+					]
+				}
 			},
 			"response": []
 		},
@@ -267,7 +403,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/conversations/getMessageLog"
+				"url": {
+					"raw": "http://localhost:8000/v1/conversations/getMessageLog",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"conversations",
+						"getMessageLog"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -285,7 +434,20 @@
 						}
 					}
 				},
-				"url": "http://localhost:8000/v1/users/changeUserStatus"
+				"url": {
+					"raw": "http://localhost:8000/v1/users/changeUserStatus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"changeUserStatus"
+					]
+				}
+
 			},
 			"response": []
 		},
@@ -302,7 +464,20 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "http://localhost:8000/v1/users/getFriendRequests"
+				"url": {
+					"raw": "http://localhost:8000/v1/users/getFriendRequests",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"v1",
+						"users",
+						"getFriendRequests"
+					]
+				}
+
 			},
 			"response": []
 		}
